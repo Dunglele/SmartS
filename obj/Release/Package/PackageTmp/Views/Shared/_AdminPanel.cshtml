@@ -1,0 +1,370 @@
+﻿@if (User.IsInRole("Admin"))
+{
+    <!doctype html>
+    <html lang="vi">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>@ViewBag.Title - SmartS Admin</title>
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/icons/font/bootstrap-icons.css" rel="stylesheet" />
+
+        <style>
+            body {
+                background-color: #f5f7fb;
+                font-family: 'Segoe UI', sans-serif;
+                overflow-x: hidden; /* Chặn thanh cuộn ngang toàn trang */
+            }
+
+            /* === LAYOUT FLEXBOX (Cốt lõi) === */
+            .admin-wrapper {
+                display: flex;
+                width: 100%;
+                min-height: 100vh;
+            }
+
+            /* SIDEBAR: Dùng Sticky để trượt theo nhưng vẫn chiếm chỗ */
+            .sidebar {
+                width: 260px;
+                height: 100vh;
+                background: #151717; /* Màu đen */
+                color: #fff;
+                position: sticky;
+                top: 0;
+                flex-shrink: 0; /* Không bao giờ bị co lại */
+                display: flex;
+                flex-direction: column;
+                z-index: 1000;
+                transition: margin-left 0.3s;
+            }
+
+            /* MAIN CONTENT: Tự động lấp đầy khoảng trống còn lại */
+            .main-content {
+                flex-grow: 1; /* Chiếm hết phần còn lại */
+                min-width: 0; /* Quan trọng: Ngăn vỡ layout khi có bảng rộng */
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Các style trang trí khác (Giữ nguyên cho đẹp) */
+            .sidebar-brand {
+                padding: 20px;
+                text-align: center;
+                border-bottom: 1px solid #333;
+            }
+
+                .sidebar-brand a {
+                    color: white;
+                    text-decoration: none;
+                    font-weight: bold;
+                    font-size: 1.5rem;
+                }
+
+            .sidebar-nav {
+                padding: 15px;
+                overflow-y: auto;
+                flex: 1;
+            }
+
+            .nav-link {
+                color: #aaa;
+                padding: 12px;
+                margin-bottom: 5px;
+                display: flex;
+                align-items: center;
+                border-radius: 8px;
+                text-decoration: none;
+            }
+
+                .nav-link:hover, .nav-link.active {
+                    background: #2d79f3;
+                    color: white;
+                }
+
+                .nav-link i {
+                    margin-right: 10px;
+                    font-size: 1.2rem;
+                }
+
+            .top-header {
+                height: 60px;
+                background: white;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                align-items: center;
+                padding: 0 20px;
+                justify-content: space-between;
+            }
+
+            .content-wrapper {
+                padding: 25px;
+            }
+
+            /* RESPONSIVE: Mobile */
+            @@media (max-width: 768px) {
+                .sidebar {
+                    position: fixed; /* Trên mobile thì fixed đè lên */
+                    margin-left: -260px; /* Mặc định ẩn */
+                }
+
+                    .sidebar.active {
+                        margin-left: 0;
+                    }
+
+                .sidebar-overlay {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 999;
+                }
+
+                    .sidebar-overlay.active {
+                        display: block;
+                    }
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <div class="admin-wrapper">
+            <aside class="sidebar" id="adminSidebar">
+                <div class="sidebar-brand">
+                    <a href="@Url.Action("Dashboard", "Admin")">Smart<span class="text-primary">S</span> Admin</a>
+                </div>
+
+                <div class="text-center py-3 border-bottom border-secondary mx-3 mb-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px">AD</div>
+                    <div class="mt-2 small text-white-50">Admin</div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="@Url.Action("Dashboard", "Admin")" class="nav-link"><i class="bi bi-speedometer2"></i> Thống kê</a>
+                    <a href="@Url.Action("Orders", "Admin")" class="nav-link"><i class="bi bi-box-seam"></i> Đơn hàng</a>
+                    <a href="@Url.Action("Products", "Admin")" class="nav-link"><i class="bi bi-phone"></i> Sản phẩm</a>
+                    <a href="@Url.Action("Categories", "Admin")" class="nav-link"><i class="bi bi-tags"></i> Danh mục</a>
+                    <a href="@Url.Action("Contact", "Admin")" class="nav-link"><i class="bi bi-envelope"></i> Liên hệ</a>
+                    <a href="@Url.Action("Accounts", "Admin")" class="nav-link"><i class="bi bi-people"></i> Tài khoản</a>
+                    <div class="mt-4 border-top border-secondary pt-2"></div>
+                    <a href="@Url.Action("Index", "Home")" class="nav-link" target="_blank"><i class="bi bi-house"></i> Trang chủ Web</a>
+                    <a href="@Url.Action("Logout", "Home")" class="nav-link text-danger"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                </nav>
+            </aside>
+
+            <div class="main-content">
+                <header class="top-header">
+                    <button class="btn btn-light border d-md-none" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+                    <h5 class="m-0 fw-bold text-secondary">@ViewBag.Title</h5>
+                </header>
+
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+
+                <footer class="mt-auto py-3 text-center text-muted border-top bg-white">
+                    <small>&copy; @DateTime.Now.Year SmartS Admin.</small>
+                </footer>
+            </div>
+        </div>
+
+        <script>
+            function toggleSidebar() {
+                document.getElementById('adminSidebar').classList.toggle('active');
+                document.getElementById('sidebarOverlay').classList.toggle('active');
+            }
+        </script>
+        <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+        <script src="~/Scripts/admin-script.js"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>
+}
+@if (User.IsInRole("Nhân viên"))
+{
+    <!doctype html>
+    <html lang="vi">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>@ViewBag.Title - SmartS Admin</title>
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/icons/font/bootstrap-icons.css" rel="stylesheet" />
+
+        <style>
+            body {
+                background-color: #f5f7fb;
+                font-family: 'Segoe UI', sans-serif;
+                overflow-x: hidden; /* Chặn thanh cuộn ngang toàn trang */
+            }
+
+            /* === LAYOUT FLEXBOX (Cốt lõi) === */
+            .admin-wrapper {
+                display: flex;
+                width: 100%;
+                min-height: 100vh;
+            }
+
+            /* SIDEBAR: Dùng Sticky để trượt theo nhưng vẫn chiếm chỗ */
+            .sidebar {
+                width: 260px;
+                height: 100vh;
+                background: #151717; /* Màu đen */
+                color: #fff;
+                position: sticky;
+                top: 0;
+                flex-shrink: 0; /* Không bao giờ bị co lại */
+                display: flex;
+                flex-direction: column;
+                z-index: 1000;
+                transition: margin-left 0.3s;
+            }
+
+            /* MAIN CONTENT: Tự động lấp đầy khoảng trống còn lại */
+            .main-content {
+                flex-grow: 1; /* Chiếm hết phần còn lại */
+                min-width: 0; /* Quan trọng: Ngăn vỡ layout khi có bảng rộng */
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Các style trang trí khác (Giữ nguyên cho đẹp) */
+            .sidebar-brand {
+                padding: 20px;
+                text-align: center;
+                border-bottom: 1px solid #333;
+            }
+
+                .sidebar-brand a {
+                    color: white;
+                    text-decoration: none;
+                    font-weight: bold;
+                    font-size: 1.5rem;
+                }
+
+            .sidebar-nav {
+                padding: 15px;
+                overflow-y: auto;
+                flex: 1;
+            }
+
+            .nav-link {
+                color: #aaa;
+                padding: 12px;
+                margin-bottom: 5px;
+                display: flex;
+                align-items: center;
+                border-radius: 8px;
+                text-decoration: none;
+            }
+
+                .nav-link:hover, .nav-link.active {
+                    background: #2d79f3;
+                    color: white;
+                }
+
+                .nav-link i {
+                    margin-right: 10px;
+                    font-size: 1.2rem;
+                }
+
+            .top-header {
+                height: 60px;
+                background: white;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                align-items: center;
+                padding: 0 20px;
+                justify-content: space-between;
+            }
+
+            .content-wrapper {
+                padding: 25px;
+            }
+
+            /* RESPONSIVE: Mobile */
+            @@media (max-width: 768px) {
+                .sidebar {
+                    position: fixed; /* Trên mobile thì fixed đè lên */
+                    margin-left: -260px; /* Mặc định ẩn */
+                }
+
+                    .sidebar.active {
+                        margin-left: 0;
+                    }
+
+                .sidebar-overlay {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 999;
+                }
+
+                    .sidebar-overlay.active {
+                        display: block;
+                    }
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <div class="admin-wrapper">
+            <aside class="sidebar" id="adminSidebar">
+                <div class="sidebar-brand">
+                    <a href="#">Smart<span class="text-primary">S</span> Staff</a>
+                </div>
+
+                <div class="text-center py-3 border-bottom border-secondary mx-3 mb-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px">S</div>
+                    <div class="mt-2 small text-white-50">Nhân viên</div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="@Url.Action("Orders", "Admin")" class="nav-link"><i class="bi bi-box-seam"></i> Đơn hàng</a>
+                    <a href="@Url.Action("Products", "Admin")" class="nav-link"><i class="bi bi-phone"></i> Sản phẩm</a>
+                    <a href="@Url.Action("Categories", "Admin")" class="nav-link"><i class="bi bi-tags"></i> Danh mục</a>
+                    <a href="@Url.Action("Contact", "Admin")" class="nav-link"><i class="bi bi-envelope"></i> Liên hệ</a>
+                    <div class="mt-4 border-top border-secondary pt-2"></div>
+                    <a href="@Url.Action("Index", "Home")" class="nav-link" target="_blank"><i class="bi bi-house"></i> Trang chủ Web</a>
+                    <a href="@Url.Action("Logout", "Home")" class="nav-link text-danger"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                </nav>
+            </aside>
+
+            <div class="main-content">
+                <header class="top-header">
+                    <button class="btn btn-light border d-md-none" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+                    <h5 class="m-0 fw-bold text-secondary">@ViewBag.Title</h5>
+                </header>
+
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+
+                <footer class="mt-auto py-3 text-center text-muted border-top bg-white">
+                    <small>&copy; @DateTime.Now.Year SmartS Staff.</small>
+                </footer>
+            </div>
+        </div>
+
+        <script>
+            function toggleSidebar() {
+                document.getElementById('adminSidebar').classList.toggle('active');
+                document.getElementById('sidebarOverlay').classList.toggle('active');
+            }
+        </script>
+        <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+        <script src="~/Scripts/admin-script.js"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>
+}

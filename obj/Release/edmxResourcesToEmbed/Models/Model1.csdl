@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SMARTS_TESTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <ComplexType Name="DS_DANHMUC_Result">
+    <Property Name="MADM" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="TENDM" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+  </ComplexType>
+  <ComplexType Name="DS_SANPHAM_Result">
+    <Property Name="MASP" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="MADM" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <Property Name="TENSP" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+    <Property Name="GIA" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="THUONGHIEU" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="MOTA" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="THONGSO" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="SOLUONG" Type="Int32" />
+    <Property Name="ANHSP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+  </ComplexType>
+  <EntityType Name="CHITIETHOADON">
+    <Key>
+      <PropertyRef Name="MAHD" />
+      <PropertyRef Name="MASP" />
+    </Key>
+    <Property Name="MAHD" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="MASP" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="TENSP" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+    <Property Name="SOLUONG" Type="Int32" />
+    <Property Name="GIA" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="TAMTINH" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="THANHTIEN" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="HOADON" Relationship="Self.FK__CHITIETHOA__MAHD__47DBAE45" FromRole="CHITIETHOADON" ToRole="HOADON" />
+    <NavigationProperty Name="SANPHAM" Relationship="Self.FK__CHITIETHOA__MASP__48CFD27E" FromRole="CHITIETHOADON" ToRole="SANPHAM" />
+  </EntityType>
+  <EntityType Name="DANHMUC">
+    <Key>
+      <PropertyRef Name="MADM" />
+    </Key>
+    <Property Name="MADM" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="TENDM" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="SOLUONG_SP" Type="Int32" />
+    <NavigationProperty Name="SANPHAM" Relationship="Self.FK__SANPHAM__MADM__3B75D760" FromRole="DANHMUC" ToRole="SANPHAM" />
+  </EntityType>
+  <EntityType Name="DATHANG">
+    <Key>
+      <PropertyRef Name="MADH" />
+    </Key>
+    <Property Name="MADH" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="HO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="TEN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="EMAIL" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="SODIENTHOAI" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+    <Property Name="DIACHI" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="PHUONGTHUCTHANHTOAN" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="MAND" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="NGUOIDUNG" Relationship="Self.FK__DATHANG__MAND__4222D4EF" FromRole="DATHANG" ToRole="NGUOIDUNG" />
+    <NavigationProperty Name="HOADON" Relationship="Self.FK__HOADON__MADH__44FF419A" FromRole="DATHANG" ToRole="HOADON" />
+  </EntityType>
+  <EntityType Name="GIOHANG">
+    <Key>
+      <PropertyRef Name="MASP" />
+      <PropertyRef Name="MAND" />
+    </Key>
+    <Property Name="MASP" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="MAND" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="ANHSP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="TENSP" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+    <Property Name="GIA" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="SOLUONG" Type="Int32" />
+    <Property Name="TAMTINH" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="NGUOIDUNG" Relationship="Self.FK__GIOHANG__MAND__3F466844" FromRole="GIOHANG" ToRole="NGUOIDUNG" />
+    <NavigationProperty Name="SANPHAM" Relationship="Self.FK__GIOHANG__MASP__3E52440B" FromRole="GIOHANG" ToRole="SANPHAM" />
+  </EntityType>
+  <EntityType Name="HOADON">
+    <Key>
+      <PropertyRef Name="MAHD" />
+    </Key>
+    <Property Name="MAHD" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="MADH" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <Property Name="TINHTRANG" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK__CHITIETHOA__MAHD__47DBAE45" FromRole="HOADON" ToRole="CHITIETHOADON" />
+    <NavigationProperty Name="DATHANG" Relationship="Self.FK__HOADON__MADH__44FF419A" FromRole="HOADON" ToRole="DATHANG" />
+  </EntityType>
+  <EntityType Name="LIENHE">
+    <Key>
+      <PropertyRef Name="MALH" />
+    </Key>
+    <Property Name="MALH" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="EMAIL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="HOTEN" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="SODIENTHOAI" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+    <Property Name="DIACHI" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="NGUOIDUNG">
+    <Key>
+      <PropertyRef Name="MAND" />
+    </Key>
+    <Property Name="MAND" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="EMAIL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="VAITRO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="MATKHAU" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+    <Property Name="HOTEN" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="SODIENTHOAI" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+    <Property Name="ANHDAIDIEN" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="DIACHI" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="DATHANG" Relationship="Self.FK__DATHANG__MAND__4222D4EF" FromRole="NGUOIDUNG" ToRole="DATHANG" />
+    <NavigationProperty Name="GIOHANG" Relationship="Self.FK__GIOHANG__MAND__3F466844" FromRole="NGUOIDUNG" ToRole="GIOHANG" />
+  </EntityType>
+  <EntityType Name="SANPHAM">
+    <Key>
+      <PropertyRef Name="MASP" />
+    </Key>
+    <Property Name="MASP" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="MADM" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+    <Property Name="TENSP" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+    <Property Name="GIA" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="THUONGHIEU" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="MOTA" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="THONGSO" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="SOLUONG" Type="Int32" />
+    <Property Name="ANHSP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK__CHITIETHOA__MASP__48CFD27E" FromRole="SANPHAM" ToRole="CHITIETHOADON" />
+    <NavigationProperty Name="DANHMUC" Relationship="Self.FK__SANPHAM__MADM__3B75D760" FromRole="SANPHAM" ToRole="DANHMUC" />
+    <NavigationProperty Name="GIOHANG" Relationship="Self.FK__GIOHANG__MASP__3E52440B" FromRole="SANPHAM" ToRole="GIOHANG" />
+  </EntityType>
+  <Association Name="FK__CHITIETHOA__MAHD__47DBAE45">
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HOADON">
+        <PropertyRef Name="MAHD" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MAHD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CHITIETHOA__MASP__48CFD27E">
+    <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SANPHAM">
+        <PropertyRef Name="MASP" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MASP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SANPHAM__MADM__3B75D760">
+    <End Role="DANHMUC" Type="Self.DANHMUC" Multiplicity="0..1" />
+    <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DANHMUC">
+        <PropertyRef Name="MADM" />
+      </Principal>
+      <Dependent Role="SANPHAM">
+        <PropertyRef Name="MADM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DATHANG__MAND__4222D4EF">
+    <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+    <End Role="DATHANG" Type="Self.DATHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NGUOIDUNG">
+        <PropertyRef Name="MAND" />
+      </Principal>
+      <Dependent Role="DATHANG">
+        <PropertyRef Name="MAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__HOADON__MADH__44FF419A">
+    <End Role="DATHANG" Type="Self.DATHANG" Multiplicity="0..1" />
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DATHANG">
+        <PropertyRef Name="MADH" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="MADH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__GIOHANG__MAND__3F466844">
+    <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="1" />
+    <End Role="GIOHANG" Type="Self.GIOHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NGUOIDUNG">
+        <PropertyRef Name="MAND" />
+      </Principal>
+      <Dependent Role="GIOHANG">
+        <PropertyRef Name="MAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__GIOHANG__MASP__3E52440B">
+    <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
+    <End Role="GIOHANG" Type="Self.GIOHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SANPHAM">
+        <PropertyRef Name="MASP" />
+      </Principal>
+      <Dependent Role="GIOHANG">
+        <PropertyRef Name="MASP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SMARTS_TESTEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CHITIETHOADON" EntityType="Self.CHITIETHOADON" />
+    <EntitySet Name="DANHMUC" EntityType="Self.DANHMUC" />
+    <EntitySet Name="DATHANG" EntityType="Self.DATHANG" />
+    <EntitySet Name="GIOHANG" EntityType="Self.GIOHANG" />
+    <EntitySet Name="HOADON" EntityType="Self.HOADON" />
+    <EntitySet Name="LIENHE" EntityType="Self.LIENHE" />
+    <EntitySet Name="NGUOIDUNG" EntityType="Self.NGUOIDUNG" />
+    <EntitySet Name="SANPHAM" EntityType="Self.SANPHAM" />
+    <AssociationSet Name="FK__CHITIETHOA__MAHD__47DBAE45" Association="Self.FK__CHITIETHOA__MAHD__47DBAE45">
+      <End Role="HOADON" EntitySet="HOADON" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CHITIETHOA__MASP__48CFD27E" Association="Self.FK__CHITIETHOA__MASP__48CFD27E">
+      <End Role="SANPHAM" EntitySet="SANPHAM" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SANPHAM__MADM__3B75D760" Association="Self.FK__SANPHAM__MADM__3B75D760">
+      <End Role="DANHMUC" EntitySet="DANHMUC" />
+      <End Role="SANPHAM" EntitySet="SANPHAM" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DATHANG__MAND__4222D4EF" Association="Self.FK__DATHANG__MAND__4222D4EF">
+      <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+      <End Role="DATHANG" EntitySet="DATHANG" />
+    </AssociationSet>
+    <AssociationSet Name="FK__HOADON__MADH__44FF419A" Association="Self.FK__HOADON__MADH__44FF419A">
+      <End Role="DATHANG" EntitySet="DATHANG" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK__GIOHANG__MAND__3F466844" Association="Self.FK__GIOHANG__MAND__3F466844">
+      <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+      <End Role="GIOHANG" EntitySet="GIOHANG" />
+    </AssociationSet>
+    <AssociationSet Name="FK__GIOHANG__MASP__3E52440B" Association="Self.FK__GIOHANG__MASP__3E52440B">
+      <End Role="SANPHAM" EntitySet="SANPHAM" />
+      <End Role="GIOHANG" EntitySet="GIOHANG" />
+    </AssociationSet>
+    <FunctionImport Name="DS_DANHMUC" IsComposable="true" ReturnType="Collection(SMARTS_TESTModel.DS_DANHMUC_Result)" />
+    <FunctionImport Name="DS_SANPHAM" IsComposable="true" ReturnType="Collection(SMARTS_TESTModel.DS_SANPHAM_Result)" />
+    <FunctionImport Name="DM_THEM_DM">
+      <Parameter Name="madm" Mode="In" Type="String" />
+      <Parameter Name="tendm" Mode="In" Type="String" />
+      <Parameter Name="soluong_sp" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ND_THEM_ND">
+      <Parameter Name="mand" Mode="In" Type="String" />
+      <Parameter Name="email" Mode="In" Type="String" />
+      <Parameter Name="vaitro" Mode="In" Type="String" />
+      <Parameter Name="matkhau" Mode="In" Type="String" />
+      <Parameter Name="hoten" Mode="In" Type="String" />
+      <Parameter Name="sodienthoai" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="SP_THEM_SP">
+      <Parameter Name="masp" Mode="In" Type="String" />
+      <Parameter Name="madm" Mode="In" Type="String" />
+      <Parameter Name="tensp" Mode="In" Type="String" />
+      <Parameter Name="gia" Mode="In" Type="Decimal" />
+      <Parameter Name="thuonghieu" Mode="In" Type="String" />
+      <Parameter Name="mota" Mode="In" Type="String" />
+      <Parameter Name="thongso" Mode="In" Type="String" />
+      <Parameter Name="soluong" Mode="In" Type="Int32" />
+      <Parameter Name="anhsp" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="SP_XOA_SP">
+      <Parameter Name="MASP" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+</Schema>

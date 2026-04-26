@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.DANHMUC>
+
+@{
+    ViewBag.Title = "Quản lý Danh mục";
+    Layout = "~/Views/Shared/_AdminPanel.cshtml";
+}
+
+<div class="main-content">
+    <header class="admin-header mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h4 class="mb-1 fw-bold text-dark">Danh mục sản phẩm</h4>
+            <p class="text-muted small mb-0">Quản lý các nhóm sản phẩm</p>
+        </div>
+        <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onclick="openModal('add')">
+            <i class="bi bi-plus-lg me-2"></i> Thêm mới
+        </button>
+    </header>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4 py-3 text-uppercase text-secondary small fw-bold">Mã DM</th>
+                        <th class="py-3 text-uppercase text-secondary small fw-bold">Tên danh mục</th>
+                        <th class="py-3 text-uppercase text-secondary small fw-bold text-center">Số lượng SP</th>
+                        <th class="text-end pe-4 py-3 text-uppercase text-secondary small fw-bold">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="border-top-0">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary font-monospace">@item.MADM</td>
+                            <td class="fw-bold text-dark">@item.TENDM</td>
+                            <td class="text-center">
+                                <span class="badge bg-light text-dark border fw-normal px-3 rounded-pill">
+                                    @item.SOLUONG_SP sản phẩm
+                                </span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-light text-primary border"
+                                            onclick="openModal('edit', '@item.MADM', '@item.TENDM', '@item.SOLUONG_SP')"
+                                            data-bs-toggle="tooltip" title="Sửa">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+
+                                    <a href="@Url.Action("DeleteCategory", new { id = item.MADM.Trim() })"
+                                       class="btn btn-sm btn-light text-danger border border-start-0"
+                                       onclick="return confirm('Cảnh báo: Xóa danh mục sẽ ảnh hưởng đến các sản phẩm thuộc danh mục này. Bạn có chắc chắn không?');"
+                                       data-bs-toggle="tooltip" title="Xóa">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="catModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-light border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold" id="modalTitle">Thông tin danh mục</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            @using (Html.BeginForm("SaveCategory", "Admin", FormMethod.Post))
+            {
+                <div class="modal-body p-4">
+                    <input type="hidden" name="Mode" id="formMode" value="add" />
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold text-uppercase">Mã danh mục</label>
+                        <input type="text" class="form-control bg-light border-0 fw-bold" name="MADM" id="txtMaDM" required placeholder="Ví dụ: IPAD">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold text-uppercase">Tên danh mục</label>
+                        <input type="text" class="form-control bg-light border-0 fw-bold" name="TENDM" id="txtTenDM" required placeholder="Ví dụ: Máy tính bảng">
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label text-muted small fw-bold text-uppercase">Số lượng SP (Tự động)</label>
+                        <input type="number" class="form-control bg-light border-0 text-muted" name="SOLUONG_SP" id="txtSoLuong">
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Lưu thay đổi</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(action, id, name, count) {
+        var modalEle = document.getElementById('catModal');
+        var myModal = new bootstrap.Modal(modalEle);
+
+        if (action === 'edit') {
+            document.getElementById('modalTitle').innerText = 'Cập nhật danh mục';
+            document.getElementById('formMode').value = 'edit';
+
+            document.getElementById('txtMaDM').value = id;
+            document.getElementById('txtMaDM').readOnly = true;
+            document.getElementById('txtMaDM').classList.add('text-muted'); // Làm mờ khi readonly
+
+            document.getElementById('txtTenDM').value = name;
+            document.getElementById('txtSoLuong').value = count;
+        } else {
+            document.getElementById('modalTitle').innerText = 'Thêm danh mục mới';
+            document.getElementById('formMode').value = 'add';
+
+            document.getElementById('txtMaDM').value = '';
+            document.getElementById('txtMaDM').readOnly = false;
+            document.getElementById('txtMaDM').classList.remove('text-muted');
+
+            document.getElementById('txtTenDM').value = '';
+            document.getElementById('txtSoLuong').value = '0';
+        }
+
+        myModal.show();
+    }
+</script>

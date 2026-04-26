@@ -1,0 +1,95 @@
+﻿@model Smarts_DoAn_Backup_27_11_2025.Models.NGUOIDUNG
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .main-content {
+        flex: 1; /* Đẩy footer xuống dưới */
+    }
+</style>
+@using (Html.BeginForm("SaveProfile", "User", FormMethod.Post))
+{
+    <main class="main-content">
+    <div class="container">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success mt-2">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger mt-2">@TempData["Error"]</div>
+        }
+        <div class="usr-edit-card">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <div class="usr-edit-sidebar">
+                        @if (Model.ANHDAIDIEN != null)
+                        {
+                            <img src="@Model.ANHDAIDIEN" alt="Avatar" class="usr-edit-avatar">
+                        }
+                        else
+                        {
+                            <img src="https://picsum.photos/300/300" alt="Avatar" class="usr-edit-avatar">
+                        }
+                        <h5 class="fw-bold mt-2">@Model.HOTEN</h5>
+                        <p class="small opacity-75">Thành viên</p>
+
+                        @*<button class="btn btn-outline-light btn-sm mt-3 rounded-pill px-4">
+                            <i class="bi bi-camera me-2"></i>Đổi ảnh
+                        </button>*@
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="usr-edit-content">
+                        <h4 class="fw-bold mb-4" style="color: #151717;">Thông tin cá nhân</h4>
+                        <div class="row">
+                            <div class="col-md-6 usr-edit-group">
+                                <label class="usr-edit-label">Email</label>
+                                <input type="email" class="usr-edit-input" value="@Model.EMAIL" readonly>
+                                <input type="hidden" class="usr-edit-input" name="MAND" value="@Model.MAND" readonly>
+                            </div>
+                            <div class="col-md-6 usr-edit-group">
+                                <label class="usr-edit-label">Vai trò</label>
+                                <input type="text" class="usr-edit-input" value="@Model.VAITRO" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 usr-edit-group">
+                                <label for="fullName" class="usr-edit-label">Họ và tên</label>
+                                <input type="text" id="fullName" name="HOTEN" class="usr-edit-input" value="@Model.HOTEN">
+                            </div>
+                            <div class="col-md-6 usr-edit-group">
+                                <label for="phone" class="usr-edit-label">Số điện thoại</label>
+                                <input type="text" id="phone" name="SODIENTHOAI" class="usr-edit-input" value="@Model.SODIENTHOAI.Trim()">
+                            </div>
+                        </div>
+                        <div class="usr-edit-group">
+                            <label for="address" class="usr-edit-label">Địa chỉ</label>
+                            <textarea type="text" id="address" name="DIACHI" class="usr-edit-input" placeholder="Điền địa chỉ vào đây">@Model.DIACHI</textarea>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end mt-4 gap-2">
+                            <button type="button" class="usr-edit-btn-cancel">Hủy bỏ</button>
+                            <button type="submit" class="usr-edit-btn-save">Lưu thay đổi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+}

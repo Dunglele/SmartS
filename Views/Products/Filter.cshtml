@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.DANHMUC>
+
+<section class="filter-section bg-light p-4 rounded-4 shadow-sm mb-4">
+    <div class="row g-3">
+
+        <div class="col-12 col-md-5">
+            <label for="filterSearch" class="form-label fw-bold small text-muted text-uppercase">
+                <i class="bi bi-search me-1"></i> Tìm kiếm
+            </label>
+            @using (Html.BeginForm("ProductList", "Products"))
+            {
+                <div class="input-group">
+                    <input class="form-control me-2" type="search" name="TimKiems" placeholder="Nhập từ khóa">
+                    <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            }
+
+        </div>
+
+        <div class="col-6 col-md-3">
+            <label for="filterTag" class="form-label fw-bold small text-muted text-uppercase">
+                <i class="bi bi-grid me-1"></i> Danh mục
+            </label>
+
+            <select class="form-select rounded-pill py-2 shadow-sm border-0" onchange="if (this.value) window.location.href = this.value;" style="cursor: pointer;">
+                <option value="@Url.Action("ProductList", "Products", new {category = "none"})">Tất cả</option>
+                @foreach (var item in Model)
+                {
+                    <option value="@Url.Action("ProductList", "Products", new {category = item.MADM})">@item.TENDM</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <label for="filterPrice" class="form-label fw-bold small text-muted text-uppercase">
+                <i class="bi bi-funnel me-1"></i> Mức giá
+            </label>
+            <select class="form-select rounded-pill py-2 shadow-sm border-0" onchange="if (this.value) window.location.href = this.value;" style="cursor: pointer;">
+                <option value="@Url.Action("ProductList", "Products", new {khoanggia = 0})">Tất cả mức giá</option>
+                <option value="@Url.Action("ProductList", "Products", new {khoanggia = 1})">Dưới 100.000 đ</option>
+                <option value="@Url.Action("ProductList", "Products", new {khoanggia = 2})">100k - 1 triệu</option>
+                <option value="@Url.Action("ProductList", "Products", new {khoanggia = 3})">Trên 1 triệu</option>
+            </select>
+        </div>
+    </div>
+</section>

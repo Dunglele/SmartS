@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.DANHMUC>
+
+<ul class="dropdown-menu border-0 shadow-sm mt-0">
+    @foreach (var item in Model)
+    {
+        <li class="dropend position-relative">
+            <a class="dropdown-item dropdown-toggle d-flex justify-content-between align-items-center" href="@Url.Action("ProductList", "Products", new { category = item.MADM })">@item.TENDM</a>
+            <ul class="dropdown-menu border-0 shadow-sm submenu">
+                @foreach (var it in item.SANPHAM.Select(x => x.THUONGHIEU).Distinct())
+                {
+                    <li><a class="dropdown-item" href="@Url.Action("ProductList", "Products", new {category = item.MADM, brand = it })">@it</a></li>
+
+                }
+            </ul>
+        </li>
+    }
+</ul>

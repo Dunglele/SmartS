@@ -1,0 +1,235 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.SANPHAM>
+@{
+    ViewBag.Title = "Trang Chủ";
+    int n = 0;
+    decimal tamtinh = 0;
+}
+
+<main>
+    <section class="container py-5 mt-4 mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-6 order-2 order-md-1 text-center text-md-start">
+                <h1 class="display-4 fw-bold mb-3">Khám Phá Chiếc Smartphones Tiếp Theo Của Bạn</h1>
+                <p class="fs-5 text-muted mb-4">Phát hành bản mới nhất, vừa ra mắt thoải mái nhất</p>
+                <div class="d-flex justify-content-center justify-content-md-start gap-2">
+                    <a href="@Url.Action("Contact", "Home")" class="btn btn-outline-dark btn-lg rounded-pill px-4">Đặt hàng ngay</a>
+                    <a href="@Url.Action("ProductList", "Products")" class="btn btn-outline-dark btn-lg rounded-pill px-4">Mua ngay</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 order-1 order-md-2 mb-4 mb-md-0">
+                <img src="@Url.Content("~/img_product/gif/gif_test.gif")" class="img-fluid rounded-4 shadow-lg" alt="Hero Image">
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Smartphones nổi bật 2025 !!!</h2>
+            <p class="text-muted">Cùng kiểm tra sản phẩm "hot" nào!</p>
+            <a href="@Url.Action("ProductList", "Products")" class="btn btn-outline-dark btn-sm rounded-pill px-4">Xem tất cả</a>
+        </div>
+
+        <div class="row g-3 g-md-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card product-card h-100 border-0 shadow-sm overflow-hidden">
+
+                        <a href="@Url.Action("Details", "Products")/@item.MASP" class="d-block text-decoration-none">
+                            <div class="product-image-frame">
+                                <img src="@item.ANHSP" alt="@item.TENSP">
+                            </div>
+                        </a>
+                        <div class="card-body text-center d-flex flex-column p-3">
+                            <a href="@Url.Action("Details", "Products")/@item.MASP" class="text-decoration-none text-dark">
+                                <h5 class="card-title fs-6 fw-bold text-truncate" title="@item.TENSP">@item.TENSP</h5>
+                            </a>
+
+                            <p class="card-text fw-bold text-primary my-2">@string.Format("{0:N0}", item.GIA) VNĐ</p>
+                            @using (Html.BeginForm("Cart", "Payment"))
+                            {
+
+                                @*@tamtinh = item.GIA * ;*@
+                                <input type="hidden" name="MASP" value="@item.MASP" />
+                                <input type="hidden" name="MAND" value="@Session["MAND"]" />
+                                <input type="hidden" name="ANHSP" value="@item.ANHSP" />
+                                <input type="hidden" name="TENSP" value="@item.TENSP" />
+                                <input type="hidden" name="GIA" value="@item.GIA" />
+                                <input type="hidden" name="SOLUONG" value="1" />
+                                <input type="hidden" name="TAMTINH" value="@item.GIA" />
+
+
+                                <button type="submit" class="btn btn-light btn-sm mt-auto w-100 rounded-pill py-2">
+                                    <i class="bi bi-cart-plus me-1"></i>
+                                    <span class="d-none d-md-inline">Thêm vào giỏ</span>
+                                    <span class="d-inline d-md-none">Mua</span>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+                n++;
+                if (n == 8)
+                {
+                    break;
+                }
+            }
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <div class="card border-0 promo-banner bg-dark text-white overflow-hidden rounded-4">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-7">
+                    <img src="@Url.Content("~/img_product/thumb/hero__mdl3lpkglcia_large_2x.jpg")" class="img-fluid w-100 h-100 promo-banner-img" style="min-height: 300px; object-fit: cover;" alt="Promotion">
+                </div>
+                <div class="col-md-5 p-4 p-lg-5 text-center text-md-start">
+                    <span class="badge bg-danger mb-3">Ưu đãi đặc biệt</span>
+                    <h2 class="fw-bold mb-3">Nâng cấp trải nghiệm</h2>
+                    <p class="text-white-50 mb-4">Khám phá những mẫu flagship mới nhất với hiệu năng đỉnh cao và thiết kế sang trọng.</p>
+                    <a href="@Url.Action("ProductList", "Products")" class="btn btn-light rounded-pill px-4 fw-bold">Khám phá ngay</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container bg-light py-5 rounded-4 mb-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-2">Danh sách thành viên</h2>
+            @*<p class="text-muted">Khách hàng của chúng tôi nghĩ gì?</p>*@
+        </div>
+
+        <div class="row g-4 px-lg-5">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                    <div class="card-body p-0">
+                        <div class="testimonial-img-wrapper mb-3">
+                            <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animals/128/Leopard-Avatar-icon.png" alt="Avatar" class="testimonial-img rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        </div>
+                        <h6 class="card-title fw-bold">Đặng Đình Sơn</h6>
+                        @*<div class="text-warning mb-3 small">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                    </div>*@
+                        <p class="card-text text-muted fst-italic small">2001230762</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                    <div class="card-body p-0">
+                        <div class="testimonial-img-wrapper mb-3">
+                            <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animals/128/Meerkat-Avatar-icon.png" alt="Avatar" class="testimonial-img rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        </div>
+                        <h6 class="card-title fw-bold">Lê Đỗ Quang Dũng</h6>
+                        @*<div class="text-warning mb-3 small">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>*@
+                        <p class="card-text text-muted fst-italic small">2001230099</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                    <div class="card-body p-0">
+                        <div class="testimonial-img-wrapper mb-3">
+                            <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animals/128/Lama-Avatar-icon.png" alt="Avatar" class="testimonial-img rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        </div>
+                        <h6 class="card-title fw-bold">Tạ Hoàng Minh</h6>
+                        @*<div class="text-warning mb-3 small">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>*@
+                    <p class="card-text text-muted fst-italic small">2001230526</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                    <div class="card-body p-0">
+                        <div class="testimonial-img-wrapper mb-3">
+                            <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animals/128/Hedgehog-Avatar-icon.png" alt="Avatar" class="testimonial-img rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        </div>
+                        <h6 class="card-title fw-bold">Nguyễn Phát Huy</h6>
+                        @*<div class="text-warning mb-3 small">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>*@
+                    <p class="card-text text-muted fst-italic small">2001230305</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                    <div class="card-body p-0">
+                        <div class="testimonial-img-wrapper mb-3">
+                            <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animals/128/Dog-Avatar-icon.png" alt="Avatar" class="testimonial-img rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        </div>
+                        <h6 class="card-title fw-bold">Nguyễn Trường Nhu</h6>
+                        @*<div class="text-warning mb-3 small">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>*@
+                    <p class="card-text text-muted fst-italic small">2001230626</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                    <div class="card-body p-0">
+                        <div class="testimonial-img-wrapper mb-3">
+                            <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animals/128/Rhinoceros-Avatar-icon.png" alt="Avatar" class="testimonial-img rounded-circle" style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        </div>
+                        <h6 class="card-title fw-bold">Trần Nguyễn Dương</h6>
+                        @*<div class="text-warning mb-3 small">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>*@
+                    <p class="card-text text-muted fst-italic small">2001230135</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 text-center text-lg-start">
+                <h2 class="fw-bold display-6 mb-3">Tại sao nên chọn chúng tôi?</h2>
+                <p class="text-muted lead mb-4">Chúng tôi có rất nhiều sản phẩm và các dịch vụ tốt nhất để phục vụ bạn.</p>
+                <a href="@Url.Action("About", "Home")" class="btn btn-outline-dark btn-lg rounded-pill px-5">Liên hệ ngay</a>
+            </div>
+            <div class="col-lg-7">
+                <div class="list-group list-group-flush bg-transparent">
+                    <div class="list-group-item bg-white border-0 d-flex align-items-start p-3 mb-2 rounded-3 shadow-sm">
+                        <div class="p-3 me-3 bg-light rounded-circle">
+                            <i class="bi bi-tags-fill fs-4 text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Giá cả phù hợp</h6>
+                            <p class="text-muted mb-0 small">Chúng tôi luôn cập nhật giá sản phẩm cho phù hợp với túi tiền của mọi người.</p>
+                        </div>
+                    </div>
+                    <div class="list-group-item bg-white border-0 d-flex align-items-start p-3 mb-2 rounded-3 shadow-sm">
+                        <div class="p-3 me-3 bg-light rounded-circle">
+                            <i class="bi bi-box-seam-fill fs-4 text-success"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Vô vàn lựa chọn</h6>
+                            <p class="text-muted mb-0 small">Bạn có thể tìm thấy các sản phẩm, giúp người dùng nhanh chóng tìm được mặt hàng phù hợp.</p>
+                        </div>
+                    </div>
+                    <div class="list-group-item bg-white border-0 d-flex align-items-start p-3 rounded-3 shadow-sm">
+                        <div class="p-3 me-3 bg-light rounded-circle">
+                            <i class="bi bi-truck fs-4 text-warning"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Giao hàng nhanh</h6>
+                            <p class="text-muted mb-0 small">Nhận sản phẩm Smartphones của bạn trong thời gian ngắn, an toàn và đúng hẹn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter-box mt-5">
+    <p>Đăng ký ngay để nhận tin tức mới từ cửa hàng !!!</p>
+</section>
+</main>

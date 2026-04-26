@@ -1,0 +1,194 @@
+﻿<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - SmartS</title>
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <style>
+        .nav-link:hover, .nav-link.active {
+    color: rgb(5, 39, 233)
+}
+/* Chỉ kích hoạt Hover trên màn hình lớn (Laptop/PC) */
+        @@media (min-width: 992px) {
+            /* 1. Mở menu cấp 1 khi hover vào Sản phẩm */
+            .group-hover-dropdown:hover > .dropdown-menu {
+                display: block;
+                margin-top: 0;
+                animation: fadeIn 0.3s ease;
+            }
+            /* 2. Mở menu cấp 2 khi hover vào Thương hiệu */
+            .dropend:hover > .submenu {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 100%; /* Đẩy sang phải */
+                margin-top: -10px;
+            }
+        }
+
+        /* Hiệu ứng hiện dần cho mượt */
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Màu khi hover vào từng mục con */
+        .dropdown-item:hover {
+            background-color: #f8f9fa; /* Màu nền xám nhẹ */
+            color: rgb(5, 39, 233); /* Màu chữ xanh */
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <header class="sticky-top bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+            <div class="container">
+                <a class="navbar-brand fw-bolder fs-3" href="@Url.Action("Index", "Home")">
+                    Smart<span class="text-primary">S</span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-bold">
+                        <li class="nav-item px-2"><a class="nav-link" href="@Url.Action("Index", "Home")">Trang Chủ</a></li>
+
+                        <li class="nav-item px-2 dropdown group-hover-dropdown">
+                            <a class="nav-link dropdown-toggle" href="@Url.Action("ProductList", "Products")" id="navbarDropdown" role="button" aria-expanded="false">
+                                Sản Phẩm
+                            </a>
+
+                            @Html.Action("NavTwo", "Home")
+
+                        </li>
+                        <li class="nav-item px-2"><a class="nav-link" href="@Url.Action("About", "Home")">Về Chúng Tôi</a></li>
+                        <li class="nav-item px-2"><a class="nav-link" href="@Url.Action("Contact", "Home")">Liên Hệ</a></li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                        <a class="nav-link position-relative text-dark" href="@Url.Action("Cart", "Payment")">
+                            <i class="bi bi-handbag fs-4"></i>
+                            @Html.Action("CountCart", "Payment")
+                        </a>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                        <i class="bi bi-person-fill fs-5"></i>
+                                    </div>
+                                    <span class="d-lg-block small fw-bold">@Session["HOTEN"]</span>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-lg-end shadow border-0 rounded-3 mt-2">
+                                    <li><h6 class="dropdown-header">Xin chào, @Session["HOTEN"]</h6></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a class="dropdown-item" href="@Url.Action("Dashboard", "Admin")"><i class="bi bi-speedometer2 me-2"></i>Quản trị</a></li>
+                                    }
+                                    @if (User.IsInRole("Nhân viên"))
+                                    {
+                                        <li><a class="dropdown-item" href="@Url.Action("Products", "Admin")"><i class="bi bi-speedometer2 me-2"></i>Quản lý</a></li>
+
+                                    }
+                                    <li><a class="dropdown-item" href="@Url.Action("EditProfile", "User", new { id = Session["MAND"] })"><i class="bi bi-person-gear me-2"></i>Hồ sơ</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Orders", "User", new { id = Session["MAND"] })"><i class="bi bi-box-seam me-2"></i>Đơn hàng</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="@Url.Action("Logout", "Home")"><i class="bi bi-box-arrow-right me-2"></i>Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Signin", "Home")" class="btn btn-dark rounded-pill px-4 btn-sm">Đăng nhập</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @RenderBody()
+
+    <footer class="pt-5 pb-4 border-top mt-auto">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-3">Smart<span class="text-primary">S</span></h5>
+                    <p class="text-muted small">Cửa hàng điện thoại uy tín hàng đầu. Chúng tôi mang đến những sản phẩm công nghệ tốt nhất cho cuộc sống của bạn.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-dark"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#" class="text-dark"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="#" class="text-dark"><i class="bi bi-youtube fs-5"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="text-uppercase">Liên kết</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Trang chủ</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Sản phẩm</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Về chúng tôi</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="text-uppercase">Hỗ trợ</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Chính sách bảo mật</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Điều khoản sử dụng</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Đổi trả hàng</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="text-uppercase">Liên hệ</h6>
+                    <ul class="list-unstyled small text-muted">
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> 123 Đường ABC, Quận 1, TP.HCM</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> support@smarts.com</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> 1900 1234</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-5 pt-3 border-top">
+                <p class="small text-muted mb-0">&copy; @DateTime.Now.Year SmartS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="position-fixed bottom-0 start-0 p-3" style="z-index: 11">
+        <div id="toast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toast-message">
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showToast(message) {
+            const toastEl = document.getElementById('toast');
+            const toastBody = document.getElementById('toast-message');
+            toastBody.innerText = message;
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+        var filterSearch = document.getElementById('filterSearch');
+        if (filterSearch) filterSearch.readOnly = true;
+    </script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/script.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

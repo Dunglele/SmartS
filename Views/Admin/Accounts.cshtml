@@ -1,0 +1,230 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.NGUOIDUNG>
+@{
+    ViewBag.Title = "Quản lý Tài khoản";
+    Layout = "~/Views/Shared/_AdminPanel.cshtml";
+}
+
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<link href="~/Content/account_admin.css" rel="stylesheet" />
+
+<div class="main-content container-fluid px-4">
+
+    <header class="admin-header py-4 d-flex justify-content-between align-items-end border-bottom mb-4">
+        <div>
+            <h4 class="mb-1 fw-bold text-dark">Danh sách Tài khoản</h4>
+            <p class="text-muted small mb-0">Quản lý người dùng và phân quyền hệ thống</p>
+        </div>
+        <div>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onclick="openModal('add')">
+                <i class="bi bi-person-plus-fill me-2"></i> Thêm mới
+            </button>
+        </div>
+    </header>
+
+    <div class="card border-0 shadow rounded-4 overflow-hidden mb-5">
+        <div class="card-header bg-white py-3 border-bottom border-light">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-shield-lock-fill text-primary me-2"></i>
+                <h6 class="mb-0 fw-bold text-uppercase small text-muted">Danh sách người dùng</h6>
+            </div>
+        </div>
+        <div class="table-responsive p-3">
+            <table class="table table-hover align-middle mb-0" id="userTable" style="width:100%">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Thông tin người dùng</th>
+                        <th>Mã ND</th>
+                        <th>Vai trò</th>
+                        <th class="text-end pe-4">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody class="border-top-0">
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-initial me-3">
+                                        @(!string.IsNullOrEmpty(user.HOTEN) ? user.HOTEN.Substring(0, 1).ToUpper() : "U")
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark">@user.HOTEN</h6>
+                                        <small class="text-muted">@user.EMAIL</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="font-monospace text-secondary bg-light px-2 py-1 rounded small border">@user.MAND</span></td>
+                            <td>
+                                @if (user.VAITRO != null && user.VAITRO.Trim() == "Admin")
+                                {
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3">
+                                        <i class="bi bi-shield-fill me-1"></i> Quản trị viên
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">
+                                        <i class="bi bi-person-fill me-1"></i> @user.VAITRO
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                @if (user.VAITRO != null && user.VAITRO.Trim() != "Admin")
+                                {
+                                    <div class="btn-group shadow-sm rounded-pill">
+                                        <button class="btn btn-sm btn-white text-primary border-end px-3"
+                                                onclick="openModal('edit','@user.MAND', '@user.EMAIL', '@user.MATKHAU', '@user.VAITRO', '@user.HOTEN', '@user.SODIENTHOAI')"
+                                                data-bs-toggle="tooltip" title="Chỉnh sửa">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <a href="@Url.Action("DeleteAccount", new { id = user.MAND })"
+                                            class="btn btn-sm btn-white text-danger px-3 rounded-end-pill"
+                                            onclick="return confirm('Cảnh báo: Xóa tài khoản này sẽ mất toàn bộ dữ liệu liên quan. Bạn có chắc chắn không?');"
+                                            data-bs-toggle="tooltip" title="Xóa">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-light border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" id="modalTitle">Thông tin người dùng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            @using (Html.BeginForm("SaveAccount", "Admin", FormMethod.Post))
+            {
+                <div class="modal-body p-4">
+                    <input type="hidden" name="Mode" id="formMode" value="add" />
+
+                    <div class="bg-light p-3 rounded-3 mb-3 border border-dashed text-center">
+                        <div class="avatar-initial mx-auto mb-2" style="width: 60px; height: 60px; font-size: 24px;">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <p class="text-muted small mb-0">Thông tin tài khoản hệ thống</p>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Mã ND <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control bg-light fw-bold" name="MAND" id="txtMAND" required placeholder="ND001">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Vai trò</label>
+                            <select class="form-select" name="VAITRO" id="txtVAITRO">
+                                <option value="Khách hàng">Khách hàng</option>
+                                <option value="Nhân viên">Nhân viên</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Họ và tên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control fw-bold" name="HOTEN" id="txtHOTEN" required placeholder="Nguyễn Văn A">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="EMAIL" id="txtEMAIL" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Số điện thoại</label>
+                            <input type="tel" class="form-control" name="SODIENTHOAI" id="txtSODIENTHOAI" required>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-muted small fw-bold text-uppercase">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-key"></i></span>
+                                <input type="text" class="form-control border-start-0 font-monospace" name="MATKHAU" id="txtMATKHAU" required placeholder="Nhập mật khẩu...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 px-4 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                        <i class="bi bi-check-lg me-1"></i> Lưu dữ liệu
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    let myModal;
+
+    $(document).ready(function () {
+        // Khởi tạo Modal
+        const modalEl = document.getElementById('userModal');
+        myModal = new bootstrap.Modal(modalEl);
+
+        // Khởi tạo DataTables
+        $('#userTable').DataTable({
+            "dom": '<"d-flex justify-content-between align-items-center mb-3"lf>rt<"d-flex justify-content-between align-items-center mt-3"ip>',
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_",
+                "search": "", "searchPlaceholder": "Tìm kiếm tài khoản...",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "Hiển thị _START_ - _END_ trong _TOTAL_ tài khoản",
+                "paginate": { "first": "«", "last": "»", "next": "›", "previous": "‹" }
+            },
+            "pageLength": 10, "ordering": false, "autoWidth": false, "responsive": true
+        });
+
+        // Tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+    function openModal(action, id, email, password, role, name, phone) {
+        if (action === 'edit') {
+            document.getElementById('modalTitle').innerText = 'Cập nhật tài khoản';
+            document.getElementById('formMode').value = 'edit';
+
+            const txtMand = document.getElementById('txtMAND');
+            txtMand.value = id;
+            txtMand.readOnly = true;
+            txtMand.classList.add('text-muted');
+
+            document.getElementById('txtEMAIL').value = email;
+            document.getElementById('txtMATKHAU').value = password;
+            // Trim để xóa khoảng trắng thừa nếu có trong DB
+            document.getElementById('txtVAITRO').value = role ? role.trim() : 'Khách hàng';
+            document.getElementById('txtHOTEN').value = name;
+            document.getElementById('txtSODIENTHOAI').value = phone;
+        } else {
+            document.getElementById('modalTitle').innerText = 'Thêm tài khoản mới';
+            document.getElementById('formMode').value = 'add';
+
+            const txtMand = document.getElementById('txtMAND');
+            txtMand.value = '';
+            txtMand.readOnly = false;
+            txtMand.classList.remove('text-muted');
+
+            document.getElementById('txtEMAIL').value = '';
+            document.getElementById('txtMATKHAU').value = '';
+            document.getElementById('txtVAITRO').value = 'Khách hàng';
+            document.getElementById('txtHOTEN').value = '';
+            document.getElementById('txtSODIENTHOAI').value = '';
+        }
+        myModal.show();
+    }
+</script>

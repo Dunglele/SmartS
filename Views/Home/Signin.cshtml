@@ -1,0 +1,138 @@
+﻿@model Smarts_DoAn_Backup_27_11_2025.Models.NGUOIDUNG
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<style>
+    /* 1. Thiết lập Main để chiếm toàn bộ khoảng trống và chứa video */
+    main {
+        position: relative;
+        flex: 1; /* Chiếm hết chiều cao còn lại */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden; /* Cắt phần video thừa */
+        min-height: 800px; /* Chiều cao tối thiểu để video đẹp */
+    }
+
+    /* 2. Video Background */
+    .video-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Video phủ kín khung */
+        z-index: 0;
+    }
+
+    /* 3. Lớp phủ tối (Overlay) giúp chữ dễ đọc hơn */
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6); /* Đen mờ 60% */
+        z-index: 1;
+    }
+
+    /* 4. Nội dung chính nổi lên trên */
+    .login-container {
+        position: relative;
+        z-index: 2; /* Nằm trên lớp phủ */
+        width: 100%;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* 5. Hiệu ứng kính (Glassmorphism) */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.85); /* Trắng trong suốt */
+        backdrop-filter: blur(12px); /* Làm mờ hậu cảnh */
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+</style>
+
+<main>
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="~/img_product/video/3129671-hd_1920_1080_30fps.mp4" type="video/mp4">
+        Trình duyệt không hỗ trợ thẻ video.
+    </video>
+
+    <div class="video-overlay"></div>
+
+    <div class="login-container">
+
+        <div class="card glass-card rounded-4 p-4 p-md-5 mb-5" style="max-width: 450px; width: 100%;">
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <div class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow" style="width: 60px; height: 60px;">
+                        <i class="bi bi-person-fill fs-2"></i>
+                    </div>
+                    <h2 class="fw-bold text-dark">Đăng Nhập</h2>
+                    <p class="text-muted small">Chào mừng bạn quay trở lại SmartS!</p>
+                </div>
+
+                @using (Html.BeginForm("Signin", "Home", FormMethod.Post))
+                {
+                    <div class="mb-3 text-start">
+                        <div class="form-floating">
+                            <input type="email" name="EMAIL" class="form-control rounded-3 border-0 bg-white" id="floatingInput" placeholder="name@example.com" required>
+                            <label for="floatingInput" class="text-muted">Email đăng nhập</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 text-start">
+                        <div class="form-floating">
+                            <input type="password" name="MATKHAU" class="form-control rounded-3 border-0 bg-white" id="floatingPassword" placeholder="Password" required>
+                            <label for="floatingPassword" class="text-muted">Mật khẩu</label>
+                        </div>
+                    </div>
+
+                    if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger d-flex align-items-center py-2 mb-3 shadow-sm border-0" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div class="small fw-bold">@ViewBag.Error</div>
+                        </div>
+                    }
+
+                    <button type="submit" class="btn btn-dark w-100 rounded-pill py-3 fw-bold shadow-lg mb-3 text-uppercase">
+                        Đăng Nhập <i class="bi bi-box-arrow-in-right ms-1"></i>
+                    </button>
+
+                    <div class="d-flex justify-content-between align-items-center small mb-4">
+                        <a href="#" class="text-decoration-none text-muted">Quên mật khẩu?</a>
+                        <a href="@Url.Action("SignUp", "Home")" class="text-primary fw-bold text-decoration-none">Đăng ký ngay</a>
+                    </div>
+
+                    <div class="accordion accordion-flush rounded-3 overflow-hidden border" id="accordionDemo">
+                        <div class="accordion-item bg-transparent">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed py-2 small bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+                                    <i class="bi bi-info-circle me-2"></i> Xem tài khoản Demo
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionDemo">
+                                <div class="accordion-body bg-white text-start small p-3">
+                                    <div class="mb-2">
+                                        <span class="badge bg-danger me-1">Admin</span> <strong>admin@smarts.com</strong> / 123
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-primary me-1">Client</span> <strong>client@smarts.com</strong> / 123
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</main>

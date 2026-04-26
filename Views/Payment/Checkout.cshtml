@@ -1,0 +1,204 @@
+﻿@*@model Smarts_DoAn_Backup_27_11_2025.Models.CheckoutList*@
+
+@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.GIOHANG>
+
+@{
+    ViewBag.Title = "Thanh toán";
+    decimal tamtinh = 0;
+    decimal thue = 0;
+    decimal tongcong = 0;
+}
+
+<main class="container my-5">
+    <div class="py-4 text-center">
+        <h2 class="fw-bold">Thanh Toán Đơn Hàng</h2>
+        <p class="lead text-muted">Vui lòng kiểm tra kỹ thông tin trước khi đặt hàng.</p>
+    </div>
+
+    @* QUAN TRỌNG: Thêm id="checkoutForm" *@
+    @using (Html.BeginForm("Checkout", "Payment", FormMethod.Post))
+    {
+        <div class="row g-5">
+            @* Cột bên phải: Tóm tắt giỏ hàng *@
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 100px; z-index: 1;">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                        <h5 class="d-flex justify-content-between align-items-center mb-0 fw-bold">
+                            <span class="text-primary">Giỏ hàng của bạn</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-primary">Đơn hàng</span>
+                            <span class="badge bg-primary rounded-pill">@ViewBag.CountDH</span>
+                        </h4>
+                        <ul class="list-group mb-3">
+                            @foreach (var item in Model)
+                            {
+                                decimal sum = item.SOLUONG.Value * item.GIA.Value;
+                                <li class="list-group-item d-flex justify-content-between lh-sm">
+                                    <div>
+                                        <h6 class="my-0">@item.TENSP</h6>
+                                        <small class="text-muted">SL: @item.SOLUONG x @string.Format("{0:N0}", item.GIA) ₫</small>
+                                    </div>
+                                    <span class="text-muted">@string.Format("{0:N0}", sum) ₫</span>
+                                    @{ 
+                                        tamtinh += sum;
+                                    }
+                                </li>
+                                        }
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Tạm tính</span>
+                                <strong>@string.Format("{0:N0}", tamtinh) ₫</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>VAT (10%)</span>
+                                <strong>
+                                    @{thue = (tamtinh * 10) / 100;} @string.Format("{0:N0}", thue) ₫
+                                </strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between fw-bold bg-light">
+                                <span>Tổng cộng</span>
+                                <strong class="fs-5 text-dark">@{tongcong = tamtinh + thue;} @string.Format("{0:N0}", tongcong) ₫</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @* Cột bên trái: Thông tin giao hàng *@
+            <div class="col-md-7 col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <h4 class="mb-4 fw-bold text-dark"><i class="bi bi-geo-alt me-2"></i>Thông tin giao hàng</h4>
+
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <input type="text" name="HO" class="form-control bg-light border-0 rounded-3" placeholder="Họ" required>
+                                    <label for="firstName">Họ</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <input type="text" name="TEN" class="form-control bg-light border-0 rounded-3" placeholder="Tên" required>
+                                    <label for="lastName">Tên</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="email" name="EMAIL" class="form-control bg-light border-0 rounded-3" placeholder="you@example.com">
+                                    <label for="email">Email <span class="text-muted small">(Không bắt buộc)</span></label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="tel" name="SODIENTHOAI" class="form-control bg-light border-0 rounded-3" placeholder="Số điện thoại" required>
+                                    <label for="phone">Số điện thoại</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" name="DIACHI" class="form-control bg-light border-0 rounded-3" placeholder="Địa chỉ" required>
+                                    <label for="address">Địa chỉ nhận hàng</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <h4 class="mb-3 fw-bold text-dark"><i class="bi bi-credit-card me-2"></i>Phương thức thanh toán</h4>
+
+                        <div class="vstack gap-3">
+                            <label class="card p-3 border rounded-3 cursor-pointer payment-option selected-payment">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input name="PHUONGTHUCTHANHTOAN" type="radio" class="form-check-input" value="COD" checked required>
+                                    </div>
+                                    <div class="ms-3 flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">Thanh toán khi nhận hàng (COD)</span>
+                                            <i class="bi bi-cash-coin fs-4 text-success"></i>
+                                        </div>
+                                        <small class="text-muted d-block">Thanh toán tiền mặt trực tiếp cho shipper khi nhận được hàng.</small>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="card p-3 border rounded-3 cursor-pointer payment-option selected-payment">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input id="bank" name="PHUONGTHUCTHANHTOAN" type="radio" class="form-check-input" value="BANK" disabled>
+                                    </div>
+                                    <div class="ms-3 flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">Chuyển khoản Ngân hàng</span>
+                                            <i class="bi bi-bank fs-4 text-primary"></i>
+                                        </div>
+                                        <small class="text-muted d-block">Tính năng đang bảo trì.</small>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="card p-3 border rounded-3 cursor-pointer payment-option selected-payment">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input id="momo="PHUONGTHUCTHANHTOAN" type="radio" class="form-check-input" value="MOMO" disabled>
+                                    </div>
+                                    <div class="ms-3 flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">Ví điện tử (Momo/ZaloPay)</span>
+                                            <i class="bi bi-wallet2 fs-4 text-danger"></i>
+                                        </div>
+                                        <small class="text-muted d-block">Tính năng đang bảo trì.</small>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <button class="w-100 btn btn-dark btn-lg rounded-pill shadow-lg py-3 fw-bold text-uppercase" type="submit">
+                            <i class="bi bi-lock-fill me-2"></i> Đặt Hàng Ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</main>
+
+<style>
+    /* Custom style cho radio card */
+    .payment-option {
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+        .payment-option:hover {
+            background-color: #f8f9fa;
+        }
+
+    label.card:has(input:checked) {
+        border-color: var(--bs-primary) !important;
+        background-color: rgba(var(--bs-primary-rgb), 0.05);
+        border-width: 2px;
+    }
+</style>
+
+<script>
+    const goBackHome = "/Home/Index";
+    // Script cập nhật số lượng badge giỏ hàng ngay khi vào trang checkout
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof getCart === 'function') {
+            const cart = getCart();
+            const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('checkout-cart-count');
+            if (badge) badge.innerText = totalQty;
+        }
+    });
+</script>

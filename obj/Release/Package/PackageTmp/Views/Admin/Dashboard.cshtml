@@ -1,0 +1,182 @@
+﻿@model Smarts_DoAn_Backup_27_11_2025.Models.DashboardList
+@using System.Globalization
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_AdminPanel.cshtml";
+
+    // Khởi tạo và xử lý dữ liệu
+    var hoaDons = Model.HoaDons ?? new List<Smarts_DoAn_Backup_27_11_2025.Models.HOADON>();
+    var chiTietHoaDons = Model.ChiTietHoaDons ?? new List<Smarts_DoAn_Backup_27_11_2025.Models.CHITIETHOADON>();
+    var nguoiDungs = Model.NguoiDungs ?? new List<Smarts_DoAn_Backup_27_11_2025.Models.NGUOIDUNG>();
+
+    int tongDonHang = hoaDons.Count();
+    decimal tongDoanhThu = chiTietHoaDons.Sum(item => item.THANHTIEN ?? 0);
+    int tongSanPham = Model.SanPhams.Sum(it => it.SOLUONG ?? 0);
+    int tongNguoiDung = nguoiDungs.Count(u => u.VAITRO == "Khách hàng");
+
+    var cultureInfo = new CultureInfo("vi-VN");
+}
+
+<div class="main-content container-fluid py-4">
+    <header class="admin-header mb-4">
+        <div>
+            <h4 class="fw-bold text-dark mb-1">Tổng quan hệ thống</h4>
+            <p class="text-muted small mb-0">Cập nhật lúc @DateTime.Now.ToString("HH:mm dd/MM/yyyy")</p>
+        </div>
+    </header>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-0">
+                <h6 class="text-muted">Đơn hàng</h6>
+                <h3 class="fw-bold text-primary">@tongDonHang.ToString("N0")</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-0">
+                <h6 class="text-muted">Doanh thu</h6>
+                <h3 class="fw-bold text-success">
+                    @tongDoanhThu.ToString("C0", cultureInfo)
+                </h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-0">
+                <h6 class="text-muted">Sản phẩm</h6>
+                <h3 class="fw-bold text-warning">@tongSanPham.ToString("N0")</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm border-0">
+                <h6 class="text-muted">Khách hàng</h6>
+                <h3 class="fw-bold text-info">@tongNguoiDung.ToString("N0")</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-8">
+            <div class="card p-4 shadow-sm border-0 h-100">
+                <h5 class="card-title fw-bold mb-4">Doanh thu theo tháng</h5>
+                <div style="height: 300px; width: 100%;">
+                    <canvas id="monthChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 shadow-sm border-0 h-100">
+                <h5 class="card-title fw-bold mb-4">Tổng quan năm</h5>
+                <div style="height: 300px; width: 100%;">
+                    <canvas id="yearChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-4 shadow-sm border-0 bg-white">
+        <h5 class="card-title fw-bold mb-3"><i class="bi bi-gear-wide-connected me-2"></i>Quản trị dữ liệu</h5>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="d-flex align-items-center p-3 border rounded-3 bg-light">
+                    <div class="me-3 text-success"><i class="bi bi-database-check fs-2"></i></div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Sao lưu dữ liệu (Backup)</h6>
+                        <p class="text-muted small mb-0">Tạo bản sao an toàn cho cơ sở dữ liệu hiện tại.</p>
+                    </div>
+                    <button id="btnBackup" class="btn btn-success btn-sm px-3 fw-bold">Sao lưu ngay</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-center p-3 border rounded-3 bg-light">
+                    <div class="me-3 text-danger"><i class="bi bi-arrow-counterclockwise fs-2"></i></div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Khôi phục dữ liệu (Restore)</h6>
+                        <p class="text-muted small mb-0">Phục hồi hệ thống từ bản sao lưu gần nhất.</p>
+                    </div>
+                    <button id="btnRestore" class="btn btn-outline-danger btn-sm px-3 fw-bold">Khôi phục</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Hàm render biểu đồ tái sử dụng
+    function renderChart(id, type, labels, labelName, data, color) {
+        const ctx = document.getElementById(id);
+        if (!ctx) return;
+
+        new Chart(ctx, {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: labelName,
+                    data: data,
+                    backgroundColor: type === 'line' ? 'transparent' : color, // Nếu line thì ko fill nền
+                    borderColor: color,
+                    borderWidth: 2,
+                    pointBackgroundColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.4, // Đường cong mềm mại
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { borderDash: [2, 4], color: '#f0f0f0' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Biểu đồ Doanh thu tháng (Line Chart - Xanh dương)
+        renderChart('monthChart', 'line',
+            ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'],
+            'Doanh thu',
+            [12000000, 19000000, 3000000, 5000000, 25000000, 18000000],
+            '#0d6efd'
+        );
+
+        // Biểu đồ Doanh thu năm (Bar Chart - Xanh lá)
+        renderChart('yearChart', 'bar',
+            ['2023', '2024', '2025'],
+            'Tổng thu',
+            [180000000, 220000000, 340000000],
+            '#198754'
+        );
+
+        // Xử lý sự kiện Backup
+        document.getElementById('btnBackup').addEventListener('click', function () {
+            if (confirm("Xác nhận sao lưu cơ sở dữ liệu?")) {
+                // Code gọi Action Backup tại đây
+                alert("Hệ thống đang tiến hành sao lưu...");
+            }
+        });
+
+        // Xử lý sự kiện Restore
+        document.getElementById('btnRestore').addEventListener('click', function () {
+            if (confirm("CẢNH BÁO: Hành động này sẽ ghi đè dữ liệu hiện tại bằng bản sao lưu cũ. Bạn có chắc chắn không?")) {
+                // Code gọi Action Restore tại đây
+                alert("Hệ thống đang tiến hành khôi phục...");
+            }
+        });
+    });
+</script>

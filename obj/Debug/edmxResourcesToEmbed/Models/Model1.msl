@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SMARTS_TESTModelStoreContainer" CdmEntityContainer="SMARTS_TESTEntities">
+    <EntitySetMapping Name="CHITIETHOADON">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.CHITIETHOADON">
+        <MappingFragment StoreEntitySet="CHITIETHOADON">
+          <ScalarProperty Name="MAHD" ColumnName="MAHD" />
+          <ScalarProperty Name="MASP" ColumnName="MASP" />
+          <ScalarProperty Name="TENSP" ColumnName="TENSP" />
+          <ScalarProperty Name="SOLUONG" ColumnName="SOLUONG" />
+          <ScalarProperty Name="GIA" ColumnName="GIA" />
+          <ScalarProperty Name="TAMTINH" ColumnName="TAMTINH" />
+          <ScalarProperty Name="THANHTIEN" ColumnName="THANHTIEN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DANHMUC">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.DANHMUC">
+        <MappingFragment StoreEntitySet="DANHMUC">
+          <ScalarProperty Name="MADM" ColumnName="MADM" />
+          <ScalarProperty Name="TENDM" ColumnName="TENDM" />
+          <ScalarProperty Name="SOLUONG_SP" ColumnName="SOLUONG_SP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DATHANG">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.DATHANG">
+        <MappingFragment StoreEntitySet="DATHANG">
+          <ScalarProperty Name="MADH" ColumnName="MADH" />
+          <ScalarProperty Name="HO" ColumnName="HO" />
+          <ScalarProperty Name="TEN" ColumnName="TEN" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="SODIENTHOAI" ColumnName="SODIENTHOAI" />
+          <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
+          <ScalarProperty Name="PHUONGTHUCTHANHTOAN" ColumnName="PHUONGTHUCTHANHTOAN" />
+          <ScalarProperty Name="MAND" ColumnName="MAND" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GIOHANG">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.GIOHANG">
+        <MappingFragment StoreEntitySet="GIOHANG">
+          <ScalarProperty Name="MASP" ColumnName="MASP" />
+          <ScalarProperty Name="MAND" ColumnName="MAND" />
+          <ScalarProperty Name="ANHSP" ColumnName="ANHSP" />
+          <ScalarProperty Name="TENSP" ColumnName="TENSP" />
+          <ScalarProperty Name="GIA" ColumnName="GIA" />
+          <ScalarProperty Name="SOLUONG" ColumnName="SOLUONG" />
+          <ScalarProperty Name="TAMTINH" ColumnName="TAMTINH" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HOADON">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.HOADON">
+        <MappingFragment StoreEntitySet="HOADON">
+          <ScalarProperty Name="MAHD" ColumnName="MAHD" />
+          <ScalarProperty Name="MADH" ColumnName="MADH" />
+          <ScalarProperty Name="TINHTRANG" ColumnName="TINHTRANG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LIENHE">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.LIENHE">
+        <MappingFragment StoreEntitySet="LIENHE">
+          <ScalarProperty Name="MALH" ColumnName="MALH" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
+          <ScalarProperty Name="SODIENTHOAI" ColumnName="SODIENTHOAI" />
+          <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NGUOIDUNG">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.NGUOIDUNG">
+        <MappingFragment StoreEntitySet="NGUOIDUNG">
+          <ScalarProperty Name="MAND" ColumnName="MAND" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="VAITRO" ColumnName="VAITRO" />
+          <ScalarProperty Name="MATKHAU" ColumnName="MATKHAU" />
+          <ScalarProperty Name="HOTEN" ColumnName="HOTEN" />
+          <ScalarProperty Name="SODIENTHOAI" ColumnName="SODIENTHOAI" />
+          <ScalarProperty Name="ANHDAIDIEN" ColumnName="ANHDAIDIEN" />
+          <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SANPHAM">
+      <EntityTypeMapping TypeName="SMARTS_TESTModel.SANPHAM">
+        <MappingFragment StoreEntitySet="SANPHAM">
+          <ScalarProperty Name="MASP" ColumnName="MASP" />
+          <ScalarProperty Name="MADM" ColumnName="MADM" />
+          <ScalarProperty Name="TENSP" ColumnName="TENSP" />
+          <ScalarProperty Name="GIA" ColumnName="GIA" />
+          <ScalarProperty Name="THUONGHIEU" ColumnName="THUONGHIEU" />
+          <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+          <ScalarProperty Name="THONGSO" ColumnName="THONGSO" />
+          <ScalarProperty Name="SOLUONG" ColumnName="SOLUONG" />
+          <ScalarProperty Name="ANHSP" ColumnName="ANHSP" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionName="SMARTS_TESTModel.Store.DS_DANHMUC" FunctionImportName="DS_DANHMUC">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SMARTS_TESTModel.DS_DANHMUC_Result">
+          <ScalarProperty Name="MADM" ColumnName="MADM" />
+          <ScalarProperty Name="TENDM" ColumnName="TENDM" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="SMARTS_TESTModel.Store.DS_SANPHAM" FunctionImportName="DS_SANPHAM">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SMARTS_TESTModel.DS_SANPHAM_Result">
+          <ScalarProperty Name="MASP" ColumnName="MASP" />
+          <ScalarProperty Name="MADM" ColumnName="MADM" />
+          <ScalarProperty Name="TENSP" ColumnName="TENSP" />
+          <ScalarProperty Name="GIA" ColumnName="GIA" />
+          <ScalarProperty Name="THUONGHIEU" ColumnName="THUONGHIEU" />
+          <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+          <ScalarProperty Name="THONGSO" ColumnName="THONGSO" />
+          <ScalarProperty Name="SOLUONG" ColumnName="SOLUONG" />
+          <ScalarProperty Name="ANHSP" ColumnName="ANHSP" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="DM_THEM_DM" FunctionName="SMARTS_TESTModel.Store.DM_THEM_DM" />
+    <FunctionImportMapping FunctionImportName="ND_THEM_ND" FunctionName="SMARTS_TESTModel.Store.ND_THEM_ND" />
+    <FunctionImportMapping FunctionImportName="SP_THEM_SP" FunctionName="SMARTS_TESTModel.Store.SP_THEM_SP" />
+    <FunctionImportMapping FunctionImportName="SP_XOA_SP" FunctionName="SMARTS_TESTModel.Store.SP_XOA_SP" />
+  </EntityContainerMapping>
+</Mapping>

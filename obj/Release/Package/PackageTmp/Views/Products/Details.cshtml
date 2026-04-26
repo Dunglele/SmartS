@@ -1,0 +1,309 @@
+﻿@model Smarts_DoAn_Backup_27_11_2025.Models.ProductDetailsMD
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    int n = 0;
+}
+
+<style>
+    /* --- CSS CƠ BẢN --- */
+    .detail-img-frame {
+        width: 100%;
+        height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border: 1px solid #eee;
+        border-radius: 15px;
+        padding: 20px;
+        overflow: hidden;
+    }
+    .detail-img-frame img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    .related-img-frame {
+        width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; background-color: #fff; padding: 10px;
+    }
+    .related-img-frame img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+    /* --- CSS BOX ƯU ĐÃI & CHÍNH SÁCH (BÊN TRÁI) --- */
+    .promotion-box {
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .promotion-header {
+        background-color: #ffeaea;
+        padding: 10px 15px;
+        border-bottom: 1px solid #fecaca;
+        color: #d70018;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+    .promo-list { padding: 15px; }
+    .promo-item { display: flex; align-items: flex-start; margin-bottom: 10px; font-size: 0.95rem; line-height: 1.5; }
+    .promo-item img { height: 18px; width: auto; margin: 0 4px; vertical-align: middle; transform: translateY(-2px); }
+    .promo-item i { margin-top: 4px; flex-shrink: 0; margin-right: 8px; font-size: 1rem; }
+
+    .policy-box {
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 15px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .policy-item { display: flex; align-items: center; margin-bottom: 12px; font-size: 0.95rem; color: #333; }
+    .policy-item:last-child { margin-bottom: 0; }
+    .policy-item i { font-size: 1.5rem; color: #0d6efd; margin-right: 15px; width: 30px; text-align: center; }
+    .policy-text span { display: block; font-size: 0.85rem; color: #666; }
+
+    /* --- CSS CHO PHẦN THÔNG SỐ KỸ THUẬT (THU GỌN/XEM THÊM) --- */
+    .specs-wrapper {
+        position: relative;
+        overflow: hidden;
+        transition: max-height 0.5s ease; /* Hiệu ứng trượt mượt mà */
+    }
+
+    /* Trạng thái thu gọn: Chiều cao tối đa 300px */
+    .specs-wrapper.collapsed {
+        max-height: 350px;
+    }
+
+    /* Lớp phủ mờ (Gradient) khi thu gọn */
+    .specs-fade {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+        display: none; /* Mặc định ẩn, JS sẽ bật lên */
+        pointer-events: none; /* Để vẫn click được text bên dưới nếu cần */
+    }
+    .specs-wrapper.collapsed .specs-fade {
+        display: block; /* Chỉ hiện khi đang thu gọn */
+    }
+
+    /* Style cho bảng thông số bên trong (để đẹp hơn) */
+    .product-specs table { width: 100%; }
+    .product-specs tr:nth-child(odd) { background-color: #f9f9f9; }
+    .product-specs td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+
+    @* Mobile adjustment *@
+    @@media (max-width: 768px) {
+        .detail-img-frame { height: 300px; }
+        .related-img-frame { height: 160px; }
+    }
+</style>
+
+<main class="container my-5">
+    @if (Model != null)
+    {
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("ProductList", "Products")" class="text-decoration-none text-muted">Sản phẩm</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Product.TENSP</li>
+            </ol>
+        </nav>
+
+        <div class="row align-items-start g-4">
+
+            <div class="col-lg-6">
+                <div class="detail-img-frame shadow-sm mb-4">
+                    <img src="@Model.Product.ANHSP" alt="@Model.Product.TENSP">
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="promotion-box">
+                            <div class="promotion-header">
+                                <i class="bi bi-gift-fill me-2"></i> Ưu đãi thanh toán
+                            </div>
+                            <div class="promo-list">
+                                <div class="promo-item">
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                    <span>Giảm đến <strong>5tr</strong> qua <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/DUMT_ZV0.png" alt="Kredivo"> Kredivo</span>
+                                </div>
+                                <div class="promo-item">
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                    <span>Hoàn tiền <strong>2 triệu</strong> thẻ <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/Icon/hsbc_icon.png" alt="HSBC"> HSBC</span>
+                                </div>
+                                <div class="promo-item">
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                    <span>Mở thẻ <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/Icon/vibb_bank.png" alt="VIB"> tặng Voucher <strong>600K</strong></span>
+                                </div>
+                                <div class="promo-item">
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                    <span>Giảm <strong>300K</strong> qua <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/Icon/image_1009_1__1.png" alt="VNPAY"> VNPAY-QR</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="policy-box">
+                            <h6 class="fw-bold mb-3 text-uppercase small text-muted">Thông tin bảo hành</h6>
+                            <div class="policy-item">
+                                <i class="bi bi-shield-check"></i>
+                                <div>
+                                    <strong>Bảo hành chính hãng 12 tháng</strong>
+                                    <span>Tại trung tâm bảo hành ủy quyền</span>
+                                </div>
+                            </div>
+                            <div class="policy-item">
+                                <i class="bi bi-arrow-repeat"></i>
+                                <div>
+                                    <strong>1 đổi 1 trong 30 ngày</strong>
+                                    <span>Nếu có lỗi phần cứng từ nhà sản xuất</span>
+                                </div>
+                            </div>
+                            <div class="policy-item">
+                                <i class="bi bi-box-seam"></i>
+                                <div>
+                                    <strong>Bộ sản phẩm bao gồm</strong>
+                                    <span>Hộp, Sách hướng dẫn, Cây lấy sim, Cáp sạc</span>
+                                </div>
+                            </div>
+                            <div class="policy-item">
+                                <i class="bi bi-telephone-inbound"></i>
+                                <div>
+                                    <strong>Hotline hỗ trợ miễn phí</strong>
+                                    <span class="text-danger fw-bold">1800.2097 (7:30 - 22:00)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center mb-2">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">
+                        @Model.Product.DANHMUC.TENDM
+                    </span>
+                    <span class="ms-2 text-success small fw-bold"><i class="bi bi-check-circle-fill me-1"></i>Còn hàng</span>
+                </div>
+
+                <h1 class="display-6 fw-bold mb-3">@Model.Product.TENSP</h1>
+
+                <h2 class="text-danger fw-bold mb-4">
+                    @string.Format("{0:N0}", Model.Product.GIA) ₫
+                </h2>
+
+                <p class="text-muted mb-4">
+                    @Model.Product.MOTA
+                </p>
+
+                <div class="card bg-light border-0 rounded-4 p-4 mb-4">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-4 col-sm-3">
+                            <input type="number" id="product-quantity" class="form-control form-control-lg text-center fw-bold" value="1" min="1">
+                        </div>
+                        <div class="col-8 col-sm-9">
+                            @using (Html.BeginForm("Cart", "Payment"))
+                            {
+                                <input type="hidden" name="MASP" value="@Model.Product.MASP" />
+                                <input type="hidden" name="MAND" value="@Session["MAND"]" />
+                                <input type="hidden" name="ANHSP" value="@Model.Product.ANHSP" />
+                                <input type="hidden" name="TENSP" value="@Model.Product.TENSP" />
+                                <input type="hidden" name="GIA" value="@Model.Product.GIA" />
+                                <input type="hidden" name="SOLUONG" value="1" />
+                                <input type="hidden" name="TAMTINH" value="@Model.Product.GIA" />
+                                <button class="btn btn-dark btn-lg w-100 rounded-pill shadow-sm" type="submit">
+                                    <i class="bi bi-cart-plus me-2"></i>THÊM VÀO GIỎ
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <label></label>
+                <label></label>
+                <label></label>
+                <hr class="text-muted opacity-25">
+
+                <div class="mt-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-cpu me-2"></i>Thông số kỹ thuật</h5>
+
+                    <div class="bg-white border rounded-3 p-3 text-secondary position-relative">
+                        <div id="specsContent" class="specs-wrapper collapsed">
+                            <div class="product-specs">
+                                @Html.Raw(Model.Product.THONGSO)
+                            </div>
+                            <div class="specs-fade"></div>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <button id="btnSpecToggle" class="btn btn-outline-primary btn-sm rounded-pill px-4" type="button">
+                                Xem thêm cấu hình chi tiết <i class="bi bi-chevron-down ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="mt-5 pt-5 border-top">
+        <h3 class="fw-bold mb-4 text-center">Sản phẩm liên quan</h3>
+        <div class="row g-3 g-md-4">
+            @foreach (var item in Model.Products)
+            {
+                if (item.MADM == Model.Product.MADM && item.MASP != Model.Product.MASP && item.THUONGHIEU == Model.Product.THUONGHIEU)
+                {
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="card product-card h-100 border-0 shadow-sm overflow-hidden">
+                            <a href="@item.MASP" class="d-block text-decoration-none">
+                                <div class="related-img-frame">
+                                    <img src="@item.ANHSP" alt="@item.TENSP">
+                                </div>
+                            </a>
+                            <div class="card-body text-center p-3 d-flex flex-column">
+                                <a href="@item.MASP" class="text-decoration-none text-dark">
+                                    <h6 class="card-title fw-bold text-truncate mb-1">@item.TENSP</h6>
+                                </a>
+                                <p class="card-text fw-bold text-primary small mb-2">@string.Format("{0:N0}", item.GIA) ₫</p>
+                                <a href="@item.MASP" class="btn btn-outline-dark btn-sm rounded-pill mt-auto stretched-link">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    n++;
+                    if (n == 4)
+                    {
+                        break;
+                    }
+                }
+            }
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var specContent = document.getElementById("specsContent");
+        var btnToggle = document.getElementById("btnSpecToggle");
+
+        if (specContent && btnToggle) {
+            btnToggle.addEventListener("click", function () {
+                // Kiểm tra xem đang đóng hay mở
+                var isCollapsed = specContent.classList.contains("collapsed");
+
+                if (isCollapsed) {
+                    // Mở ra
+                    specContent.classList.remove("collapsed");
+                    btnToggle.innerHTML = 'Thu gọn <i class="bi bi-chevron-up ms-1"></i>';
+                } else {
+                    // Đóng lại
+                    specContent.classList.add("collapsed");
+                    btnToggle.innerHTML = 'Xem thêm cấu hình chi tiết <i class="bi bi-chevron-down ms-1"></i>';
+
+                    // Cuộn nhẹ lên đầu bảng thông số để người dùng không bị hụt hẫng
+                    // specContent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }
+    });
+</script>

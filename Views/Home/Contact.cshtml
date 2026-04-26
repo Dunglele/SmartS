@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Liên hệ";
+}
+
+<main class="container my-5">
+
+    <div class="text-center py-5" style="margin-top: -30px;">
+        <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill">Hỗ trợ khách hàng</span>
+        <h1 class="display-5 fw-bold mb-3">Liên Hệ SmartS</h1>
+        <p class="fs-5 text-muted">Đội ngũ CSKH hoạt động 24/7, sẵn sàng giải đáp mọi thắc mắc của bạn.</p>
+        <div class="mx-auto mt-4" style="width: 60px; height: 4px; background: var(--primary-color, #151717); border-radius: 2px;"></div>
+    </div>
+
+    <section class="mb-5">
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm h-100 border transition-hover">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle mb-3" style="width: 70px; height: 70px;">
+                        <i class="bi bi-truck fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold">Giao Hàng Tốc Độ</h5>
+                    <p class="text-muted small mb-0">Vận chuyển nhanh chóng, an toàn đến tận tay khách hàng.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm h-100 border transition-hover">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle mb-3" style="width: 70px; height: 70px;">
+                        <i class="bi bi-clock-history fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold">Xử Lý Nhanh Chóng</h5>
+                    <p class="text-muted small mb-0">Tiếp nhận và xử lý yêu cầu trong vòng 24h làm việc.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm h-100 border transition-hover">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning rounded-circle mb-3" style="width: 70px; height: 70px;">
+                        <i class="bi bi-gear-wide-connected fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold">Bảo Hành Uy Tín</h5>
+                    <p class="text-muted small mb-0">Chính sách đổi trả và bảo hành chính hãng trọn đời.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5 py-4">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="row g-0">
+                <div class="col-lg-6 p-4 p-lg-5 bg-white">
+                    <h3 class="fw-bold mb-2">Gửi tin nhắn cho chúng tôi</h3>
+                    <p class="text-muted mb-4">Để lại thông tin, chúng tôi sẽ liên hệ lại sớm nhất!</p>
+
+                    @if (ViewBag.Msg != null)
+                    {
+                        <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <div>@ViewBag.Msg</div>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Contact", "Home", FormMethod.Post))
+                    {
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="HOTEN" class="form-control bg-light border-0 rounded-3" id="floatingName" placeholder="Họ tên" required>
+                                    <label for="floatingName">Họ tên</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" name="SODIENTHOAI" class="form-control bg-light border-0 rounded-3" id="floatingPhone" placeholder="Số điện thoại" required>
+                                    <label for="floatingPhone">Số điện thoại</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="email" name="EMAIL" class="form-control bg-light border-0 rounded-3" id="floatingEmail" placeholder="Email" required>
+                                    <label for="floatingEmail">Email</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" name="DIACHI" class="form-control bg-light border-0 rounded-3" id="floatingAddress" placeholder="Địa chỉ">
+                                    <label for="floatingAddress">Địa chỉ</label>
+                                </div>
+                            </div>
+                            @*<div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea name="NOIDUNG" class="form-control bg-light border-0 rounded-3" placeholder="Nội dung" style="height: 100px"></textarea>
+                                        <label>Nội dung cần hỗ trợ</label>
+                                    </div>
+                                </div>*@
+
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-dark btn-lg w-100 rounded-pill fw-bold shadow-sm">
+                                    Gửi thông tin <i class="bi bi-send ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="@Url.Content("~/img_product/thumb/contact_thumb.jpg")"
+                         class="img-fluid w-100 h-100 object-fit-cover"
+                         alt="Contact SmartS"
+                         style="min-height: 500px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter-box mt-5">
+        <p>Đăng ký ngay để nhận tin tức mới từ cửa hàng !!!</p>
+    </section>
+
+</main>

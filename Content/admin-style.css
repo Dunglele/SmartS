@@ -1,0 +1,109 @@
+/* admin-style.css - Final Version */
+:root {
+    --sidebar-bg: #212529;
+    --primary-color: #0d6efd;
+    --hover-bg: rgba(255, 255, 255, 0.1);
+    --active-bg: #293037;
+}
+
+body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.admin-wrapper { min-height: 100vh; }
+
+/* Sidebar */
+.sidebar { width: 250px; background-color: var(--sidebar-bg); flex-shrink: 0; transition: all 0.3s; }
+.sidebar .header-title, .sidebar .user-info { padding: 1.5rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: white; }
+.sidebar-nav { padding: 10px 0; }
+.sidebar-nav .nav-link { display: flex; align-items: center; padding: 12px 20px; color: #adb5bd; text-decoration: none; transition: 0.3s; }
+.sidebar-nav .nav-link:hover { background-color: var(--hover-bg); color: #fff; }
+.sidebar-nav li.active .nav-link { background-color: var(--active-bg); color: #fff; border-left: 4px solid var(--primary-color); }
+.sidebar-nav .nav-link i { margin-right: 12px; font-size: 1.1rem; }
+
+/* Main Content */
+.main-content { flex-grow: 1; padding: 30px; overflow-y: auto; }
+.admin-header { background: #fff; padding: 15px 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+
+/* Cards & Table */
+.card { border: none; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.03); margin-bottom: 20px; }
+.product-img { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; margin-right: 12px; }
+.table thead th { font-weight: 600; text-transform: uppercase; font-size: 0.85rem; color: #6c757d; border-bottom-width: 1px; }
+
+/* Status Badges */
+.badge { padding: 0.5em 0.8em; font-weight: 500; }
+.badge-admin { background-color: #e0cffc; color: #5a32a3; }
+.badge-staff { background-color: #cff4fc; color: #055160; }
+.badge-customer { background-color: #cfe2ff; color: #084298; }
+.badge-shipping { background-color: #fff3cd; color: #664d03; }
+.badge-delivered { background-color: #d1e7dd; color: #0f5132; }
+.badge-pending { background-color: #e2e3e5; color: #383d41; }
+
+/* Toast Notification (Thông báo góc phải) */
+.toast-container { position: fixed; top: 20px; right: 20px; z-index: 1060; }
+
+/* Vùng Upload Ảnh */
+.upload-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.upload-label {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    border: 2px dashed #ced4da; /* Viền nét đứt */
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: all 0.3s;
+}
+
+.upload-label:hover {
+    background-color: #e9ecef;
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.upload-label i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: block;
+    color: #6c757d;
+}
+
+/* Input file thật sẽ bị ẩn đi */
+#prod-img-input {
+    display: none;
+}
+
+/* Ảnh xem trước */
+.img-preview-container {
+    text-align: center;
+    margin-top: 10px;
+    position: relative;
+    display: none; /* Mặc định ẩn */
+}
+
+.img-preview {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-remove-img {
+    position: absolute;
+    top: -10px;
+    right: 50%;
+    transform: translateX(50px); /* Căn chỉnh vị trí nút xóa */
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    cursor: pointer;
+}   

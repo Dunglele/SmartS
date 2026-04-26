@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.GIOHANG>
+@{
+    ViewBag.Title = "Cart";
+    string mAND = Session["MAND"].ToString();
+    decimal sumtamtinh = 0;
+}
+
+<main class="container my-5">
+
+    <div class="text-center my-5">
+        <h1 class="display-5 fw-bold">Giỏ Hàng Của Bạn</h1>
+    </div>
+    @if (Model.FirstOrDefault(x => x.MAND == mAND) == null)
+    {
+        <div id="cart-empty-msg" class="text-center">
+            <p class="fs-4 text-muted">Giỏ hàng của bạn đang trống.</p>
+            <a href="@Url.Action("ProductList", "Products")" class="btn btn-dark btn-lg">Tiếp tục mua sắm</a>
+        </div>
+    }
+
+    else
+    {
+        <div class="row" id="cart-total-container">
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table align-middle cart-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Tạm tính</th>
+                                <th scope="col">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                decimal tamtinh = item.TAMTINH.Value * item.SOLUONG.Value;
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="@item.ANHSP" alt="@item.TENSP" class="me-3 rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                                            <span class="fw-bold text-dark">@item.TENSP</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-nowrap">@string.Format("{0:N0}", item.GIA) ₫</td>
+                                    <td style="min-width: 80px;">
+                                        <input type="number" class="form-control quantity-input text-center"
+                                               value="@item.SOLUONG" min="1">
+                                    </td>
+                                    <td class="text-nowrap fw-bold">@string.Format("{0:N0}", tamtinh) ₫</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-outline-danger" href="@Url.Action("DeleteCart", new { idn = item.MAND, idm = item.MASP })">
+                                                <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                sumtamtinh += tamtinh;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @{
+                decimal thue = (sumtamtinh * 10) / 100;
+                decimal tongcong = sumtamtinh + thue;
+              }
+
+            <div class="col-lg-4">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-4">Tổng Cộng</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                Tạm tính
+                                <span>@string.Format("{0:N0}", sumtamtinh) ₫</span>
+                                <input type="hidden" value="@sumtamtinh" name="" />
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                Thuế (10%)
+                                <span>@string.Format("{0:N0}", thue) ₫</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0 fw-bold fs-5">
+                                Tổng cộng
+                                <span>@string.Format("{0:N0}", tongcong) </span>
+                            </li>
+                        </ul>
+                        <a href="@Url.Action("Checkout", "Payment")" class="btn btn-dark btn-lg w-100 mt-4">Tiến hành thanh toán</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</main>

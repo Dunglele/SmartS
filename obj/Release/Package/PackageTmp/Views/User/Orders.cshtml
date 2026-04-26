@@ -1,0 +1,170 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.DATHANG>
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal VAT = 0;
+}
+<link href="~/Content/order_user.css" rel="stylesheet" />
+<link href="~/Content/print.css" rel="stylesheet" />
+
+<main class="main-content">
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h3 class="fw-bold mb-4 text-dark">Lịch sử mua hàng</h3>
+
+                <div class="history-card">
+                    <div class="card-header-custom">
+                        <span class="fw-bold fs-5">Danh sách đơn hàng</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-orders mb-0 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Người nhận</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th class="text-end">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach (var tiem in Model)
+                                {
+                                    decimal tongtien = 0;
+                                    <tr>
+                                        <td><span class="fw-bold text-primary">#@tiem.MADH</span></td>
+                                        <td>12/12/2024 10:30</td>
+                                        <td>
+                                            <div class="fw-bold">@tiem.HO @tiem.TEN</div>
+                                            <small class="text-muted">@tiem.SODIENTHOAI</small>
+                                        </td>
+                                        @foreach (var item in tiem.HOADON)
+                                        {
+                                            foreach (var it in item.CHITIETHOADON)
+                                            {
+                                                if (item.MAHD == it.MAHD && item.MADH == tiem.MADH)
+                                                {
+                                                    tongtien += it.THANHTIEN.Value;
+                                                    VAT = tongtien * 10 / 100;
+                                                    tongtien += VAT;
+                                                }
+
+                                            }
+                                        }
+                                     
+                                        <td class="fw-bold text-dark">@string.Format("{0:N0}", tongtien) đ</td>
+                                        @foreach (var item in tiem.HOADON)
+                                        {
+                                            if (item.MADH == tiem.MADH)
+                                            {
+                                                if (item.TINHTRANG == null)
+                                                {
+                                                    <td><span class="status-badge status-success">Đang xử lý</span></td>
+                                                }
+                                                else
+                                                {
+                                                    string badgeClass = "bg-secondary";
+                                                    if (@item.TINHTRANG == "Chờ xử lý") { badgeClass = "bg-warning text-dark"; }
+                                                    else if (@item.TINHTRANG == "Đang giao") { badgeClass = "bg-info text-dark"; }
+                                                    else if (@item.TINHTRANG == "Đã giao") { badgeClass = "bg-success"; }
+                                                    else if (@item.TINHTRANG == "Đã hủy") { badgeClass = "bg-danger"; }
+                                                    <td><span class="badge @badgeClass">@item.TINHTRANG</span></td>
+                                                }
+                                            }
+                                        }
+
+                                        <td class="text-end">
+                                            <a href="#popup-@tiem.MADH" class="btn-view">
+                                                <i class="fas fa-eye me-1"></i> Chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        decimal tongtien = 0;
+        foreach (var tiem in item.HOADON)
+        {
+            foreach (var it in tiem.CHITIETHOADON)
+            {
+                if (tiem.MAHD == it.MAHD && item.MADH == tiem.MADH)
+                {
+                    tongtien += it.THANHTIEN.Value;
+                }
+
+            }
+        }
+        <div id="popup-@item.MADH" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-header-custom">
+                    <h5 class="fw-bold m-0">Chi tiết đơn hàng #@item.MADH</h5>
+                    <a href="#" class="close-btn">&times;</a>
+                </div>
+
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-group">
+                                <div class="info-label mb-1">Địa chỉ nhận hàng</div>
+                                <div class="info-value">@item.HO @item.TEN</div>
+                                <div class="small">@item.SODIENTHOAI</div>
+                                <div class="small text-muted">@item.DIACHI</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-group">
+                                <div class="info-label mb-1">Thanh toán</div>
+                                <div class="info-value">@item.PHUONGTHUCTHANHTOAN</div>
+                                <div class="small">VAT: @string.Format("{0:N0}", VAT = tongtien * 10 / 100) đ</div>
+                                <div class="small text-danger fw-bold">Tổng: @string.Format("{0:N0}", tongtien + VAT) đ</div>
+                            </div>
+                        </div>
+                    </div>
+                    @foreach (var hoadons in item.HOADON)
+                    {
+                        <h6 class="fw-bold mt-3 mb-3">Sản phẩm đã đặt</h6>
+                        <div class="border rounded p-3">
+                            @foreach (var it in hoadons.CHITIETHOADON)
+                            {
+                                <div class="item-row">
+                                    <img src="@it.SANPHAM.ANHSP" class="item-img" alt="@it.SANPHAM.TENSP">
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold text-dark">@it.SANPHAM.TENSP</div>
+                                        <div class="small text-muted">Số lượng: @it.SOLUONG</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold">@string.Format("{0:N0}", @it.THANHTIEN) đ</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="p-3 border-top text-end bg-light" style="border-radius: 0 0 12px 12px;">
+                    <a href="#" class="btn btn-secondary btn-sm px-4" style="border-radius: 40px;">Đóng</a>
+                    <button type="button" class="btn btn-success btn-sm px-4"
+                            onclick="printOrder('@item.MADH')"
+                            style="border-radius: 40px;">
+                        <i class="bi bi-printer me-2"></i>In hóa đơn
+                    </button>
+                </div>
+                
+            </div>
+            <a href="#" class="position-absolute w-100 h-100" style="z-index: -1;"></a>
+        </div>
+    }
+</main>
+
+<script src="~/Scripts/printOrder.js"></script>

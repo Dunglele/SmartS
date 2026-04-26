@@ -1,0 +1,198 @@
+﻿@using System.Globalization
+@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.GIOHANG>
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    string mAND = Session["MAND"] as string;
+
+    // Tạo culture để format tiền tệ ngay từ server lúc load trang
+    var culture = CultureInfo.GetCultureInfo("vi-VN");
+
+    // Tính toán sơ bộ lúc mới load trang
+    decimal sumtamtinh = 0;
+    if (Model != null)
+    {
+        sumtamtinh = Model.Sum(x => (x.GIA ?? 0) * (x.SOLUONG ?? 0));
+    }
+}
+
+<main class="container my-5">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong>Thông báo:</strong> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="text-center my-5">
+        <h1 class="display-5 fw-bold">Giỏ Hàng Của Bạn</h1>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div id="cart-empty-msg" class="text-center">
+            <p class="fs-4 text-muted">Giỏ hàng của bạn đang trống.</p>
+            <a href="@Url.Action("ProductList", "Products")" class="btn btn-dark btn-lg">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        <div class="row" id="cart-total-container">
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table align-middle cart-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col" class="text-center">Số lượng</th>
+                                <th scope="col">Tạm tính</th>
+                                <th scope="col" class="text-center">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                decimal gia = item.GIA ?? 0;
+                                int soluong = item.SOLUONG ?? 1;
+                                decimal tamtinh = gia * soluong;
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="@item.ANHSP" alt="@item.TENSP" class="me-3 rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                                            <span class="fw-bold text-dark">@item.TENSP</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-nowrap">@gia.ToString("#,##0", culture) ₫</td>
+
+                                    @* CỘT SỐ LƯỢNG: Thêm nút + - và class ajax-quantity *@
+                                    <td style="min-width: 140px;">
+                                        <div class="input-group input-group-sm justify-content-center" style="width: 120px; margin: 0 auto;">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="adjustQty(this, -1)">-</button>
+
+                                            <input type="number"
+                                                   class="form-control text-center ajax-quantity"
+                                                   data-masp="@item.MASP"
+                                                   value="@soluong"
+                                                   min="1"
+                                                   readonly> <button class="btn btn-outline-secondary" type="button" onclick="adjustQty(this, 1)">+</button>
+                                        </div>
+                                    </td>
+
+                                    @* CỘT TẠM TÍNH: Thêm ID để JS cập nhật *@
+                                    <td class="text-nowrap fw-bold" id="item-total-@item.MASP">
+                                        @tamtinh.ToString("#,##0", culture) ₫
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-outline-danger" href="@Url.Action("DeleteCart", "Payment", new { idn = item.MAND, idm = item.MASP })">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @{
+                decimal thue = (sumtamtinh * 10) / 100;
+                decimal tongcong = sumtamtinh + thue;
+            }
+
+            <div class="col-lg-4">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-4">Tổng Cộng</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                Tạm tính
+                                @* Thêm ID *@
+                                <span id="cart-subtotal">@sumtamtinh.ToString("#,##0", culture) ₫</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                Thuế (10%)
+                                @* Thêm ID *@
+                                <span id="cart-tax">@thue.ToString("#,##0", culture) ₫</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0 fw-bold fs-5">
+                                Tổng cộng
+                                @* Thêm ID *@
+                                <span id="cart-total">@tongcong.ToString("#,##0", culture) ₫</span>
+                            </li>
+                        </ul>
+                        <a href="@Url.Action("Checkout", "Payment")" class="btn btn-dark btn-lg w-100 mt-4">Tiến hành thanh toán</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</main>
+
+@* --- PHẦN SCRIPT XỬ LÝ AJAX --- *@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    // 1. Hàm xử lý khi bấm nút + hoặc -
+    function adjustQty(btn, val) {
+        var input = $(btn).siblings('.ajax-quantity'); // Tìm ô input bên cạnh nút bấm
+        var currentVal = parseInt(input.val());
+        var newVal = currentVal + val;
+
+        if (newVal >= 1) {
+            input.val(newVal);
+            input.trigger('change'); // Kích hoạt sự kiện change để gọi AJAX
+        }
+    }
+
+    // 2. Hàm định dạng tiền tệ (VNĐ)
+    function formatMoney(amount) {
+        // Định dạng kiểu 1.000.000 ₫
+        return amount.toLocaleString('vi-VN') + ' ₫';
+    }
+
+    $(document).ready(function () {
+        // 3. Bắt sự kiện thay đổi số lượng
+        $('.ajax-quantity').on('change', function () {
+            var input = $(this);
+            var masp = input.data('masp'); // Lấy mã sản phẩm từ data-masp
+            var newQty = input.val();
+
+            // Gọi AJAX về PaymentController
+            $.ajax({
+                url: '/Payment/UpdateCartItem', // Đảm bảo đúng tên Controller
+                type: 'POST',
+                data: { masp: masp, soluong: newQty },
+                success: function (res) {
+                    if (res.success) {
+                        // Cập nhật thành tiền của dòng sản phẩm đó
+                        $('#item-total-' + masp).text(formatMoney(res.itemTotal));
+
+                        // Cập nhật bảng tổng cộng bên phải
+                        $('#cart-subtotal').text(formatMoney(res.subTotal));
+                        $('#cart-tax').text(formatMoney(res.tax));
+                        $('#cart-total').text(formatMoney(res.total));
+                    } else {
+                        alert(res.msg); // Báo lỗi nếu có (VD: hết hàng)
+                        // Reset lại số lượng cũ nếu muốn (tùy chọn)
+                    }
+                },
+                error: function () {
+                    alert('Lỗi kết nối server!');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    /* Ẩn mũi tên mặc định của input number cho đẹp */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>

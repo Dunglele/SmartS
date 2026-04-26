@@ -1,0 +1,700 @@
+/* style.css - CẬP NHẬT & BỔ SUNG */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #151717;
+    --accent-color: #2d79f3;
+    --bg-light: #f8f9fa;
+    --text-muted: #6c757d;
+    --card-radius: 20px;
+    --transition-speed: 0.3s;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
+    color: var(--primary-color);
+    line-height: 1.6;
+}
+
+/* === Hero Section === */
+.hero-section {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border-radius: 0 0 50px 50px; /* Bo tròn góc dưới tạo điểm nhấn */
+    padding: 80px 0;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-title {
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+/* === Category Group (Mới - Để chia nhóm sản phẩm) === */
+.category-card {
+    transition: transform var(--transition-speed);
+    cursor: pointer;
+    text-align: center;
+}
+
+    .category-card:hover {
+        transform: translateY(-5px);
+    }
+
+.category-img-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    transition: border-color 0.3s;
+    border: 2px solid transparent;
+}
+
+.category-card:hover .category-img-wrapper {
+    border-color: var(--primary-color);
+}
+
+/* === Product Card (Tối ưu lại) === */
+.product-card {
+    border: none;
+    border-radius: var(--card-radius);
+    background: #fff;
+    transition: all var(--transition-speed) ease;
+    overflow: hidden;
+    position: relative;
+}
+
+    .product-card:hover {
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+    }
+
+    .product-card .card-img-top {
+        height: 250px; /* Giảm chiều cao chút để gọn hơn trên mobile */
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .card-img-top {
+        transform: scale(1.05); /* Zoom nhẹ ảnh khi hover */
+    }
+
+.card-action-btn {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.product-card:hover .card-action-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === Testimonials === */
+.testimonial-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+    border: 1px solid #f0f0f0;
+}
+
+/* === Features Section === */
+.feature-box {
+    background: #fff;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+    .feature-box:hover {
+        background: #f8f9fa;
+    }
+
+/* === Footer === */
+footer {
+    background-color: #fcfcfc;
+}
+
+    footer h6 {
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    footer a {
+        transition: color 0.2s;
+    }
+
+        footer a:hover {
+            color: var(--accent-color) !important;
+        }
+
+/* Giữ nguyên các class logic cũ của bạn bên dưới */
+/* ... (Copy phần còn lại của file css cũ vào đây nếu chưa có) ... */
+
+/*=== CSS Bổ sung cho Details ===*/
+
+.detail-image {
+    max-height: 600px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.product-specs li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+    .product-specs li::before {
+        content: "\f269"; /* icon bi-check-circle-fill */
+        font-family: "bootstrap icons";
+        position: absolute;
+        left: 0;
+        color: #0d6efd; /* Màu xanh primary */
+        font-weight: 700;
+    }
+
+/* === Header & Cart === */
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.navbar-nav .nav-link.active {
+  color: #000;
+  font-weight: 700;
+}
+
+/* CSS cho icon giỏ hàng */
+.nav-cart {
+  position: relative;
+}
+
+/* CSS cho số lượng hàng trong giỏ */
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  font-size: 0.65rem;
+  padding: 0.2em 0.4em;
+}
+
+/* === Product Card === */
+.product-card {
+  border: none;
+  transition: box-shadow 0.3s ease;
+}
+.product-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.product-card .card-img-top {
+  height: 300px;
+  width: 100%;
+  object-fit: cover; /* Quan trọng: Đảm bảo ảnh vừa vặn, không bị méo */
+  background-color: #f8f9fa; /* Màu nền trong khi chờ tải ảnh */
+}
+
+/* === Auth Forms (Login/Register) === */
+.auth-form {
+  max-width: 500px;
+  margin: 5rem auto;
+}
+
+.auth-form .form-control {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border: none;
+}
+
+.btn-custom-light {
+  background-color: #d1c8c8;
+  color: #333;
+  border: none;
+  font-weight: 500;
+}
+
+.btn-custom-light:hover {
+  background-color: #bfb6b6;
+  color: #000;
+}
+
+/* === Newsletter Box === */
+/* === CẬP NHẬT TRONG style.css === */
+
+.newsletter-box {
+    /* Đảm bảo chiều rộng 100% và khoảng cách */
+    border-radius: 15px;
+    width: 100%;
+    padding: 50px 0; /* Giữ padding như cũ */
+    margin: 50px 0; /* Giữ margin như cũ */
+    text-align: center;
+    /* === THAY ĐỔI MỚI CHO HIỆU ỨNG ẢNH VÀ MỜ (BLUR) === */
+    /* Đặt ảnh nền (Thay đổi URL ảnh của bạn tại đây) */
+    background-image: url('https://assets.bwbx.io/images/users/iqjWHBFdfxIU/ixuK4SNx6C4A/v1/-999x-999.gif'); /* Thay đổi ảnh */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Thiết lập Flexbox để căn giữa nội dung */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Chiều cao cố định (Ví dụ 150px) */
+    height: 150px;
+    /* Ẩn overflow (để box-shadow không bị tràn nếu thêm sau này) */
+    overflow: hidden;
+    /* Thiết lập vị trí cho lớp phủ */
+    position: relative;
+    color: white; /* Đổi màu chữ thành trắng để dễ đọc trên nền ảnh */
+    font-weight: bold;
+}
+
+    /* Thêm lớp phủ (Overlay) để tạo hiệu ứng trong suốt/mờ */
+    .newsletter-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* Màu nền mờ (Ví dụ: màu đen với độ trong suốt 0.5) */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Thêm hiệu ứng mờ (blur) vào lớp phủ (tùy chọn) */
+        /* backdrop-filter: blur(2px); */ /* Chỉ dùng nếu muốn nội dung phía sau mờ đi */
+        z-index: 1; /* Đảm bảo lớp phủ nằm dưới nội dung chữ */
+    }
+
+    /* Đặt nội dung chữ (p) lên trên lớp phủ */
+    .newsletter-box p {
+        position: relative;
+        z-index: 2; /* Đảm bảo chữ nằm trên lớp phủ */
+        margin-bottom: 0; /* Xóa margin mặc định của p */
+        font-size: 1.2rem;
+        text-shadow: 1px 1px 2px #000; /* Thêm shadow để dễ đọc hơn */
+    }
+
+/* === Cart Page === */
+.cart-table img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.375rem;
+}
+
+.cart-table .quantity-input {
+  width: 70px;
+}
+
+/* === Filter Section (Products Page) === */
+.filter-section {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+/* === Footer === */
+main {
+    flex: 1;
+}
+
+footer a {
+    font-weight: 500;
+ }
+
+/*Template UI*/
+
+/* From Uiverse.io by micaelgomestavares */
+.form-sign {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 30px;
+    width: 100%;
+    border-radius: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+::placeholder {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.form-sign button {
+    align-self: flex-end;
+}
+
+.flex-column-sign > label {
+    color: #151717;
+    font-weight: 600;
+    align-content:flex-start;
+}
+
+.inputForm-sign {
+    border: 1.5px solid #ecedec;
+    border-radius: 10px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.input-sign {
+    margin-left: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 85%;
+    height: 100%;
+}
+
+    .input-sign:focus {
+        outline: none;
+    }
+
+.inputForm-sign:focus-within {
+    border: 1.5px solid #2d79f3;
+}
+
+.flex-row-sign {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+    .flex-row-sign > div > label {
+        font-size: 14px;
+        color: black;
+        font-weight: 400;
+    }
+
+.span-sign {
+    font-size: 14px;
+    margin-left: 5px;
+    color: #2d79f3;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.button-submit-sign {
+    margin: 20px 0 10px 0;
+    background-color: #151717;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 10px;
+    height: 50px;
+    width: 100%;
+    cursor: pointer;
+}
+
+    .button-submit-sign:hover {
+        background-color: #252727;
+    }
+
+.p-sign {
+    text-align: center;
+    color: black;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.btn google {
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    gap: 10px;
+    border: 1px solid #ededef;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+    .btn google:hover {
+        border: 1px solid #2d79f3;
+        ;
+    }
+
+.btn apple {
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    gap: 10px;
+    border: 1px solid #ededef;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+    .btn apple:hover {
+        border: 1px solid #2d79f3;
+        ;
+    }
+
+/* === USER PROFILE EDIT (New Styles) === */
+
+/* Container chính của thẻ hồ sơ */
+.usr-edit-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); /* Đổ bóng nhẹ hiện đại */
+    overflow: hidden; /* Để bo góc ảnh nền */
+    margin: 3rem auto; /* Căn giữa và cách trên dưới */
+    max-width: 900px; /* Giới hạn chiều rộng để không quá to */
+    border: 1px solid #f0f0f0;
+}
+
+/* Cột bên trái: Sidebar chứa Avatar */
+.usr-edit-sidebar {
+    background-color: #151717; /* Màu đen theo tông web của bạn */
+    color: #ffffff;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%; /* Full chiều cao */
+}
+
+/* Ảnh đại diện */
+.usr-edit-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+    .usr-edit-avatar:hover {
+        transform: scale(1.05);
+        border-color: #2d79f3; /* Viền xanh khi hover */
+    }
+
+/* Cột bên phải: Form nội dung */
+.usr-edit-content {
+    padding: 40px;
+}
+
+/* Style cho từng cụm input (Label + Input) */
+.usr-edit-group {
+    margin-bottom: 1.5rem;
+}
+
+.usr-edit-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Ô input tùy chỉnh riêng */
+.usr-edit-input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1.5px solid #ecedec; /* Giống style inputForm-sign */
+    background-color: #fcfcfc;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: #151717;
+    transition: all 0.2s ease;
+}
+
+    .usr-edit-input:focus {
+        outline: none;
+        border-color: #2d79f3; /* Màu xanh chủ đạo */
+        background-color: #fff;
+        box-shadow: 0 0 0 4px rgba(45, 121, 243, 0.1);
+    }
+
+    /* Input ở trạng thái Readonly (không sửa được) */
+    .usr-edit-input[readonly] {
+        background-color: #f2f2f2;
+        border-color: #e0e0e0;
+        color: #888;
+        cursor: not-allowed;
+    }
+
+/* Nút lưu thay đổi */
+.usr-edit-btn-save {
+    background-color: #2d79f3;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%; /* Trên mobile sẽ full width */
+}
+
+    .usr-edit-btn-save:hover {
+        background-color: #1a64db;
+    }
+
+.usr-edit-btn-cancel {
+    background-color: transparent;
+    color: #666;
+    border: none;
+    padding: 12px 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+    .usr-edit-btn-cancel:hover {
+        color: #151717;
+        text-decoration: underline;
+    }
+
+/* Responsive: Điều chỉnh khi màn hình nhỏ */
+@media (min-width: 768px) {
+    .usr-edit-btn-save {
+        width: auto; /* Trên máy tính nút sẽ gọn lại */
+    }
+}
+/* --- BỔ SUNG CSS MỚI --- */
+
+/* Tạo khoảng cách thoáng hơn cho các section */
+section.container {
+    margin-bottom: 5rem !important; /* Tăng khoảng cách dưới giữa các khối */
+}
+
+/* Testimonial Image - Ảnh tròn cho phần đánh giá */
+.testimonial-img-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem auto; /* Căn giữa và tạo khoảng cách dưới */
+    position: relative;
+}
+
+.testimonial-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh luôn lấp đầy khung tròn không bị méo */
+    border: 3px solid #f8f9fa; /* Viền nhẹ tiệp màu nền */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* Cải thiện Card sản phẩm */
+.product-card {
+    border: none;
+    border-radius: 15px; /* Bo góc mềm mại hơn */
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    height: 100%; /* Đảm bảo các card bằng nhau */
+}
+
+    .product-card:hover {
+        transform: translateY(-5px); /* Hiệu ứng nổi lên khi di chuột */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .product-card .card-img-top {
+        /* Ghi đè style cũ để đảm bảo ảnh đẹp trong khung mới */
+        border-radius: 15px 15px 0 0 !important;
+        height: 220px; /* Chiều cao cố định cho ảnh sản phẩm */
+    }
+
+/* Banner quảng cáo mới (Thay thế phần thumb cũ) */
+.promo-banner {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.promo-banner-img {
+    min-height: 300px;
+    object-fit: cover;
+}
+
+/* Tinh chỉnh Newsletter */
+.newsletter-box {
+    /* Loại bỏ margin cứng cũ và dùng bootstrap spacing trong HTML */
+    margin: 0 !important;
+    border-radius: 20px;
+}
+/* Hiệu ứng cho Feature Item */
+.feature-item {
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+    .feature-item:hover {
+        transform: translateY(-3px); /* Nhấc nhẹ lên khi hover */
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; /* Bóng đổ sâu hơn */
+        border-color: var(--bs-primary); /* Viền màu chủ đạo */
+    }
+
+/* Khung chứa icon */
+.icon-wrapper {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Bo tròn hoàn toàn */
+    flex-shrink: 0; /* Không bị co lại trên mobile */
+}
+/* Khung chứa ảnh sản phẩm */
+.product-image-frame {
+    width: 100%;
+    /* Mobile: Chiều cao nhỏ gọn */
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff; /* Nền trắng để làm nổi bật sản phẩm */
+    padding: 15px; /* Tạo khoảng cách an toàn để ảnh không chạm lề */
+    transition: transform 0.3s ease;
+}
+
+    /* Ảnh bên trong */
+    .product-image-frame img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto; /* Để tự động theo tỷ lệ */
+        height: auto; /* Để tự động theo tỷ lệ */
+        object-fit: contain; /* QUAN TRỌNG: Giữ nguyên vẹn ảnh, không bị cắt */
+    }
+
+/* PC: Tăng chiều cao lên */
+@media (min-width: 768px) {
+    .product-image-frame {
+        height: 250px; /* PC ảnh to rõ hơn */
+        padding: 20px;
+    }
+
+    /* Hiệu ứng zoom nhẹ khi di chuột trên PC */
+    .product-card:hover .product-image-frame img {
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+}

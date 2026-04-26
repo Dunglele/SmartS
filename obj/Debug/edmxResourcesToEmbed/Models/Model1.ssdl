@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SMARTS_TESTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CHITIETHOADON">
+    <Key>
+      <PropertyRef Name="MAHD" />
+      <PropertyRef Name="MASP" />
+    </Key>
+    <Property Name="MAHD" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="MASP" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="TENSP" Type="nvarchar" MaxLength="120" />
+    <Property Name="SOLUONG" Type="int" />
+    <Property Name="GIA" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="TAMTINH" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="THANHTIEN" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="DANHMUC">
+    <Key>
+      <PropertyRef Name="MADM" />
+    </Key>
+    <Property Name="MADM" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="TENDM" Type="nvarchar" MaxLength="30" />
+    <Property Name="SOLUONG_SP" Type="int" />
+  </EntityType>
+  <EntityType Name="DATHANG">
+    <Key>
+      <PropertyRef Name="MADH" />
+    </Key>
+    <Property Name="MADH" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="HO" Type="nvarchar" MaxLength="30" />
+    <Property Name="TEN" Type="nvarchar" MaxLength="30" />
+    <Property Name="EMAIL" Type="nvarchar" MaxLength="30" />
+    <Property Name="SODIENTHOAI" Type="char" MaxLength="11" />
+    <Property Name="DIACHI" Type="nvarchar" MaxLength="500" />
+    <Property Name="PHUONGTHUCTHANHTOAN" Type="nvarchar" MaxLength="300" />
+    <Property Name="MAND" Type="char" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="GIOHANG">
+    <Key>
+      <PropertyRef Name="MASP" />
+      <PropertyRef Name="MAND" />
+    </Key>
+    <Property Name="MASP" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="MAND" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="ANHSP" Type="varchar" MaxLength="500" />
+    <Property Name="TENSP" Type="nvarchar" MaxLength="120" />
+    <Property Name="GIA" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="SOLUONG" Type="int" />
+    <Property Name="TAMTINH" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <EntityType Name="HOADON">
+    <Key>
+      <PropertyRef Name="MAHD" />
+    </Key>
+    <Property Name="MAHD" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="MADH" Type="char" MaxLength="5" />
+    <Property Name="TINHTRANG" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="LIENHE">
+    <Key>
+      <PropertyRef Name="MALH" />
+    </Key>
+    <Property Name="MALH" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="EMAIL" Type="varchar" MaxLength="30" />
+    <Property Name="HOTEN" Type="nvarchar" MaxLength="60" />
+    <Property Name="SODIENTHOAI" Type="char" MaxLength="11" />
+    <Property Name="DIACHI" Type="nvarchar" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="NGUOIDUNG">
+    <Key>
+      <PropertyRef Name="MAND" />
+    </Key>
+    <Property Name="MAND" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="EMAIL" Type="varchar" MaxLength="30" />
+    <Property Name="VAITRO" Type="varchar" MaxLength="30" />
+    <Property Name="MATKHAU" Type="char" MaxLength="15" />
+    <Property Name="HOTEN" Type="nvarchar" MaxLength="60" />
+    <Property Name="SODIENTHOAI" Type="char" MaxLength="11" />
+    <Property Name="ANHDAIDIEN" Type="varchar" MaxLength="300" />
+    <Property Name="DIACHI" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="SANPHAM">
+    <Key>
+      <PropertyRef Name="MASP" />
+    </Key>
+    <Property Name="MASP" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="MADM" Type="char" MaxLength="5" />
+    <Property Name="TENSP" Type="nvarchar" MaxLength="120" />
+    <Property Name="GIA" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="THUONGHIEU" Type="varchar" MaxLength="30" />
+    <Property Name="MOTA" Type="nvarchar" MaxLength="1000" />
+    <Property Name="THONGSO" Type="nvarchar" MaxLength="1000" />
+    <Property Name="SOLUONG" Type="int" />
+    <Property Name="ANHSP" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <Association Name="FK__CHITIETHOA__MAHD__47DBAE45">
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HOADON">
+        <PropertyRef Name="MAHD" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MAHD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CHITIETHOA__MASP__48CFD27E">
+    <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SANPHAM">
+        <PropertyRef Name="MASP" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MASP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DATHANG__MAND__4222D4EF">
+    <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+    <End Role="DATHANG" Type="Self.DATHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NGUOIDUNG">
+        <PropertyRef Name="MAND" />
+      </Principal>
+      <Dependent Role="DATHANG">
+        <PropertyRef Name="MAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__GIOHANG__MAND__3F466844">
+    <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="1" />
+    <End Role="GIOHANG" Type="Self.GIOHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NGUOIDUNG">
+        <PropertyRef Name="MAND" />
+      </Principal>
+      <Dependent Role="GIOHANG">
+        <PropertyRef Name="MAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__GIOHANG__MASP__3E52440B">
+    <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="1" />
+    <End Role="GIOHANG" Type="Self.GIOHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SANPHAM">
+        <PropertyRef Name="MASP" />
+      </Principal>
+      <Dependent Role="GIOHANG">
+        <PropertyRef Name="MASP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__HOADON__MADH__44FF419A">
+    <End Role="DATHANG" Type="Self.DATHANG" Multiplicity="0..1" />
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DATHANG">
+        <PropertyRef Name="MADH" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="MADH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SANPHAM__MADM__3B75D760">
+    <End Role="DANHMUC" Type="Self.DANHMUC" Multiplicity="0..1" />
+    <End Role="SANPHAM" Type="Self.SANPHAM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DANHMUC">
+        <PropertyRef Name="MADM" />
+      </Principal>
+      <Dependent Role="SANPHAM">
+        <PropertyRef Name="MADM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="DM_THEM_DM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="madm" Type="char" Mode="In" />
+    <Parameter Name="tendm" Type="nvarchar" Mode="In" />
+    <Parameter Name="soluong_sp" Type="int" Mode="In" />
+  </Function>
+  <Function Name="DS_DANHMUC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="MADM" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="TENDM" Type="nvarchar" MaxLength="30" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="DS_SANPHAM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="MASP" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="MADM" Type="char" MaxLength="5" />
+          <Property Name="TENSP" Type="nvarchar" MaxLength="120" />
+          <Property Name="GIA" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="THUONGHIEU" Type="varchar" MaxLength="30" />
+          <Property Name="MOTA" Type="nvarchar" MaxLength="1000" />
+          <Property Name="THONGSO" Type="nvarchar" MaxLength="1000" />
+          <Property Name="SOLUONG" Type="int" />
+          <Property Name="ANHSP" Type="varchar" MaxLength="500" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
+  <Function Name="ND_THEM_ND" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="mand" Type="char" Mode="In" />
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="vaitro" Type="varchar" Mode="In" />
+    <Parameter Name="matkhau" Type="char" Mode="In" />
+    <Parameter Name="hoten" Type="varchar" Mode="In" />
+    <Parameter Name="sodienthoai" Type="char" Mode="In" />
+  </Function>
+  <Function Name="SP_THEM_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="masp" Type="char" Mode="In" />
+    <Parameter Name="madm" Type="char" Mode="In" />
+    <Parameter Name="tensp" Type="nvarchar" Mode="In" />
+    <Parameter Name="gia" Type="decimal" Mode="In" />
+    <Parameter Name="thuonghieu" Type="varchar" Mode="In" />
+    <Parameter Name="mota" Type="nvarchar" Mode="In" />
+    <Parameter Name="thongso" Type="nvarchar" Mode="In" />
+    <Parameter Name="soluong" Type="int" Mode="In" />
+    <Parameter Name="anhsp" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="SP_XOA_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="MASP" Type="char" Mode="In" />
+  </Function>
+  <EntityContainer Name="SMARTS_TESTModelStoreContainer">
+    <EntitySet Name="CHITIETHOADON" EntityType="Self.CHITIETHOADON" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DANHMUC" EntityType="Self.DANHMUC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DATHANG" EntityType="Self.DATHANG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GIOHANG" EntityType="Self.GIOHANG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LIENHE" EntityType="Self.LIENHE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NGUOIDUNG" EntityType="Self.NGUOIDUNG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SANPHAM" EntityType="Self.SANPHAM" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__CHITIETHOA__MAHD__47DBAE45" Association="Self.FK__CHITIETHOA__MAHD__47DBAE45">
+      <End Role="HOADON" EntitySet="HOADON" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CHITIETHOA__MASP__48CFD27E" Association="Self.FK__CHITIETHOA__MASP__48CFD27E">
+      <End Role="SANPHAM" EntitySet="SANPHAM" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DATHANG__MAND__4222D4EF" Association="Self.FK__DATHANG__MAND__4222D4EF">
+      <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+      <End Role="DATHANG" EntitySet="DATHANG" />
+    </AssociationSet>
+    <AssociationSet Name="FK__GIOHANG__MAND__3F466844" Association="Self.FK__GIOHANG__MAND__3F466844">
+      <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+      <End Role="GIOHANG" EntitySet="GIOHANG" />
+    </AssociationSet>
+    <AssociationSet Name="FK__GIOHANG__MASP__3E52440B" Association="Self.FK__GIOHANG__MASP__3E52440B">
+      <End Role="SANPHAM" EntitySet="SANPHAM" />
+      <End Role="GIOHANG" EntitySet="GIOHANG" />
+    </AssociationSet>
+    <AssociationSet Name="FK__HOADON__MADH__44FF419A" Association="Self.FK__HOADON__MADH__44FF419A">
+      <End Role="DATHANG" EntitySet="DATHANG" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SANPHAM__MADM__3B75D760" Association="Self.FK__SANPHAM__MADM__3B75D760">
+      <End Role="DANHMUC" EntitySet="DANHMUC" />
+      <End Role="SANPHAM" EntitySet="SANPHAM" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

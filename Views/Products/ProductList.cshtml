@@ -1,0 +1,163 @@
+﻿@model IEnumerable<Smarts_DoAn_Backup_27_11_2025.Models.SANPHAM>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<style>
+    /* === 1. THIẾT LẬP CHO MOBILE (Mặc định) === */
+    .product-img-responsive {
+        width: 100%;
+        height: 160px; /* Mobile ảnh nhỏ gọn */
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-title {
+        font-size: 0.9rem; /* Chữ vừa phải */
+        height: 2.5em; /* Giới hạn 2 dòng */
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .card-product-wrapper {
+        border: 1px solid #f0f0f0;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    /* === 2. THIẾT LẬP CHO MÁY TÍNH (Màn hình > 768px) === */
+    @@media (min-width: 768px) {
+        .product-img-responsive {
+            height: 260px; /* PC ảnh to cao */
+        }
+
+        .product-title {
+            font-size: 1.1rem; /* Chữ to hơn */
+        }
+
+        .card-product-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: transparent;
+        }
+
+        /* Hiệu ứng zoom ảnh nhẹ khi di chuột trên PC */
+        .card-product-wrapper:hover .product-img-responsive {
+            transform: scale(1.05);
+        }
+    }
+</style>
+
+<main class="container my-3 my-md-5">
+
+    <div class="text-center py-4 py-md-5">
+        <h1 class="display-5 fw-bold mb-2 d-none d-md-block">Sản Phẩm Mới Nhất</h1> <h2 class="fs-4 fw-bold mb-2 d-block d-md-none">Sản Phẩm Mới</h2> <p class="text-muted">Khám phá công nghệ đỉnh cao ngay hôm nay!</p>
+        <div class="mx-auto mt-3" style="width: 60px; height: 4px; background: var(--primary-color, #151717); border-radius: 2px;"></div>
+    </div>
+
+    <div class="mb-4">
+        @Html.Action("Filter", "Products")
+    </div>
+
+    <div class="row g-3 g-md-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="card product-card h-100 border-0 shadow-sm overflow-hidden">
+
+                    <a href="@Url.Action("Details", "Products")/@item.MASP" class="d-block text-decoration-none">
+                        <div class="product-image-frame">
+                            <img src="@item.ANHSP" alt="@item.TENSP">
+                        </div>
+                    </a>
+                    <div class="card-body text-center d-flex flex-column p-3">
+                        <a href="@Url.Action("Details", "Products")/@item.MASP" class="text-decoration-none text-dark">
+                            <h5 class="card-title fs-6 fw-bold text-truncate" title="@item.TENSP">@item.TENSP</h5>
+                        </a>
+
+                        <p class="card-text fw-bold text-primary my-2">@string.Format("{0:N0}", item.GIA) VNĐ</p>
+                        @using (Html.BeginForm("Cart", "Payment"))
+                        {
+
+                            @*@tamtinh = item.GIA * ;*@
+                            <input type="hidden" name="MASP" value="@item.MASP" />
+                            <input type="hidden" name="MAND" value="@Session["MAND"]" />
+                            <input type="hidden" name="ANHSP" value="@item.ANHSP" />
+                            <input type="hidden" name="TENSP" value="@item.TENSP" />
+                            <input type="hidden" name="GIA" value="@item.GIA" />
+                            <input type="hidden" name="SOLUONG" value="1" />
+                            <input type="hidden" name="TAMTINH" value="@item.GIA" />
+
+
+                            <button type="submit" onclick="showToast('Đã thêm sản phẩm vào giỏ hàng!')" class="btn btn-light btn-sm mt-auto w-100 rounded-pill py-2">
+                                <i class="bi bi-cart-plus me-1"></i>
+                                <span class="d-none d-md-inline">Thêm vào giỏ</span>
+                                <span class="d-inline d-md-none">Mua</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <section class="container mb-5">
+        <div class="row justify-content-center" style="padding-top: 30px;">
+            <div class="col-12">
+
+                <div class="text-center mb-5">
+                    <h3 class="fw-bold mb-3 display-6 ls-tight">Tại sao chọn SmartS?</h3>
+                    <p class="text-muted mx-auto" style="max-width: 600px;">
+                        Chúng tôi cam kết mang đến trải nghiệm mua sắm an toàn, tiện lợi và đẳng cấp nhất cho bạn.
+                    </p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="feature-item p-4 bg-white rounded-4 shadow-sm d-flex align-items-center h-100 border">
+                            <div class="icon-wrapper bg-success-subtle text-success me-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; flex-shrink: 0;">
+                                <i class="bi bi-shield-check fs-3"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Hàng chính hãng 100%</h6>
+                                <small class="text-muted">Cam kết bảo hành 12 tháng chính hãng.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="feature-item p-4 bg-white rounded-4 shadow-sm d-flex align-items-center h-100 border">
+                            <div class="icon-wrapper bg-primary-subtle text-primary me-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; flex-shrink: 0;">
+                                <i class="bi bi-truck fs-3"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Miễn phí vận chuyển</h6>
+                                <small class="text-muted">Áp dụng cho đơn hàng từ 5 triệu đồng.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="feature-item p-4 bg-white rounded-4 shadow-sm d-flex align-items-center h-100 border">
+                            <div class="icon-wrapper bg-warning-subtle text-warning me-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; flex-shrink: 0;">
+                                <i class="bi bi-lightning-charge-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Giao hàng hỏa tốc</h6>
+                                <small class="text-muted">Nhận hàng nội thành chỉ trong 2H.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="newsletter-box mt-5">
+        <p>Đăng ký ngay để nhận tin tức mới từ cửa hàng !!!</p>
+    </section>
+
+</main>

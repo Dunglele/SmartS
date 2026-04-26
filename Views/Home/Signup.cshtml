@@ -1,0 +1,147 @@
+﻿@model Smarts_DoAn_Backup_27_11_2025.Models.NGUOIDUNG
+@{
+    ViewBag.Title = "Đăng ký thành viên";
+}
+
+<style>
+    /* 1. Thiết lập Main để chiếm toàn bộ khoảng trống và chứa video */
+    main {
+        position: relative;
+        flex: 1; /* Chiếm hết chiều cao còn lại giữa Nav và Footer */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        min-height: 850px; /* Chiều cao tối thiểu để hiển thị đẹp */
+    }
+
+    /* 2. Video Background */
+    .video-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Video phủ kín khung */
+        z-index: 0;
+    }
+
+    /* 3. Lớp phủ tối (Overlay) */
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Đen mờ 50% */
+        z-index: 1;
+    }
+
+    /* 4. Nội dung chính nổi lên trên */
+    .signup-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* 5. Hiệu ứng kính (Glassmorphism) */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.9); /* Trắng đục hơn Login xíu để dễ đọc form dài */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+</style>
+
+<main>
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="~/img_product/video/3129671-hd_1920_1080_30fps.mp4" type="video/mp4">
+        Trình duyệt không hỗ trợ thẻ video.
+    </video>
+
+    <div class="video-overlay"></div>
+
+    <div class="signup-container">
+
+        <div class="card glass-card rounded-4 p-4 p-md-5 mb-4" style="max-width: 550px; width: 100%;">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-dark">Đăng Ký Tài Khoản</h2>
+                    <p class="text-muted small">Trở thành thành viên SmartS để nhận nhiều ưu đãi!</p>
+                </div>
+
+                @using (Html.BeginForm("Signup", "Home", FormMethod.Post))
+                {
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" name="HOTEN" class="form-control rounded-3 border-0 bg-white" id="floatName" placeholder="Nguyễn Văn A" required>
+                                <label for="floatName" class="text-muted">Họ và tên</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="email" name="EMAIL" class="form-control rounded-3 border-0 bg-white" id="floatEmail" placeholder="name@example.com" required>
+                                <label for="floatEmail" class="text-muted">Email đăng nhập</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="tel" name="SODIENTHOAI" class="form-control rounded-3 border-0 bg-white" id="floatPhone" placeholder="09xxxx" required>
+                                <label for="floatPhone" class="text-muted">Số điện thoại</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="password" name="MATKHAU" class="form-control rounded-3 border-0 bg-white" id="floatPass" placeholder="Pass" required>
+                                <label for="floatPass" class="text-muted">Mật khẩu</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="password" name="XACNHANMATKHAU" class="form-control rounded-3 border-0 bg-white" id="floatRePass" placeholder="RePass" required>
+                                <label for="floatRePass" class="text-muted">Nhập lại MK</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    if (ViewBag.Msg != null)
+                    {
+                        <div class="alert alert-info d-flex align-items-center py-2 mt-3 mb-0 border-0 shadow-sm" role="alert">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            <div class="small fw-bold">@ViewBag.Msg</div>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-dark w-100 rounded-pill py-3 fw-bold shadow-lg mb-3 text-uppercase">
+                            Đăng Ký Ngay <i class="bi bi-check-lg ms-1"></i>
+                        </button>
+
+                        <div class="text-center small">
+                            <span class="text-muted">Đã có tài khoản?</span>
+                            <a href="@Url.Action("SignIn", "Home")" class="text-primary fw-bold text-decoration-none ms-1">Đăng nhập</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="w-100" style="max-width: 550px;">
+            <div class="text-white text-center p-3 rounded-4" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);">
+                <p class="mb-0 small fw-bold"><i class="bi bi-bell-fill text-warning me-2"></i>Đăng ký ngay để nhận tin tức mới từ cửa hàng!</p>
+            </div>
+        </div>
+
+    </div>
+</main>

@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt hàng thành công</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa; /* Màu nền xám nhẹ dịu mắt */
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem; /* Bo tròn góc thẻ */
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Đổ bóng tạo chiều sâu */
+        }
+
+        .success-icon-container {
+            width: 80px;
+            height: 80px;
+            background-color: #d1e7dd; /* Màu nền xanh nhạt cho icon */
+            color: #198754; /* Màu xanh lá đậm của Bootstrap */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+            .success-icon-container i {
+                font-size: 40px;
+            }
+
+        /* Hiệu ứng nảy nhẹ cho icon khi load trang */
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .btn-custom {
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vh-100 d-flex justify-content-center align-items-center">
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+
+                    <div class="card p-5 text-center">
+
+                        <div class="success-icon-container">
+                            <i class="fas fa-check"></i>
+                        </div>
+
+                        <h2 class="mb-3 text-success fw-bold">Thành công!</h2>
+                        <p class="text-muted mb-4">
+                            Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn đang được xử lý và sẽ sớm được giao đến bạn.
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <a href="/don-hang-cua-toi" class="btn btn-dark btn-custom">
+                                Xem đơn hàng
+                            </a>
+                            <a href="/" class="btn btn-outline-secondary btn-custom">
+                                Trở về trang chủ
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
