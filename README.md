@@ -107,4 +107,5 @@ Dự án được phát triển cho mục đích học tập và làm đồ án.
 
 ---
 **SMARTS Team** - Kết nối đam mê công nghệ.
+<br />
 **Quản lý dự án** - ldqdung@outlook.com (Lê Đỗ Quang Dũng)
