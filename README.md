@@ -6,6 +6,8 @@
 [![Bootstrap](https://img.shields.io/badge/UI-Bootstrap%205-purple.svg)](https://getbootstrap.com/)
 
 **SMARTS** là một hệ thống thương mại điện tử hiện đại được xây dựng trên nền tảng ASP.NET MVC, cho phép người dùng mua sắm các thiết bị công nghệ một cách thuận tiện và quản trị viên quản lý cửa hàng một cách hiệu quả.
+<hr />
+<img width="3682" height="1676" alt="image" src="https://github.com/user-attachments/assets/b12cf46f-fcf8-47d5-9f6f-738d59e9de31" />
 
 ---
 
@@ -92,9 +94,11 @@ Smarts_DoAn/
 ---
 
 ## 📸 Demo giao diện
-*(Lưu ý: Bạn có thể cập nhật hình ảnh thực tế của dự án vào đây)*
-- **Trang chủ**: Hiện đại, responsive.
-- **Quản trị**: Trình bày dữ liệu khoa học, dễ sử dụng.
+<img width="2782" height="1702" alt="image" src="https://github.com/user-attachments/assets/1a2d25ff-43d0-4066-a1e5-d667ce51e301" />
+<hr />
+- Trang chủ: Hiện đại, responsive.
+<br />
+- Quản trị: Trình bày dữ liệu khoa học, dễ sử dụng.
 
 ---
 
@@ -103,3 +107,4 @@ Dự án được phát triển cho mục đích học tập và làm đồ án.
 
 ---
 **SMARTS Team** - Kết nối đam mê công nghệ.
+**Quản lý dự án** - ldqdung@outlook.com (Lê Đỗ Quang Dũng)
